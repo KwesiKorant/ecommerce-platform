@@ -1,8 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafafa;
+  --foreground: #09090b;
+
+  /* Calibrated Spring Easing Tokens (Arc-AA Standard) */
+  --ease-snappy: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark {
+  --background: #09090b;
+  --foreground: #f4f4f5;
 }
 
 @theme inline {
@@ -12,15 +23,118 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Base Body Styles */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Universal Button Tactility (Compositor Scale Only) */
+.btn-tactile {
+  transition: transform 150ms var(--ease-snappy), opacity 150ms var(--ease-snappy);
+  will-change: auto;
+}
+.btn-tactile:hover {
+  will-change: transform;
+}
+.btn-tactile:active {
+  transform: scale(0.97);
+}
+
+/* Zero-Translate Desktop Card Stability */
+/* Mutates strictly border-color & background-color; locks transform: translateY(0) */
+.product-card {
+  transform: translate3d(0, 0, 0);
+  transition: border-color 150ms var(--ease-snappy), background-color 150ms var(--ease-snappy);
+}
+.product-card:hover {
+  transform: translate3d(0, 0, 0) !important;
+}
+
+/* Separation Tier Architecture for Blur & Glassmorphism */
+/* High-Tier: Luxury GPU Backdrop Blur */
+[data-blur-tier="high"] .glass-panel {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: rgba(255, 255, 255, 0.82);
+}
+.dark [data-blur-tier="high"] .glass-panel,
+[data-blur-tier="high"] .dark .glass-panel {
+  background-color: rgba(9, 9, 11, 0.82);
+}
+
+/* Low-Tier: Zero-GPU Mimic (Solid 100% opaque surface tint + crisp micro-border) */
+[data-blur-tier="low"] .glass-panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+.dark [data-blur-tier="low"] .glass-panel,
+[data-blur-tier="low"] .dark .glass-panel {
+  background-color: #09090b !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Zero-Reflow Text Reveal GPU Keyframes */
+@keyframes textRevealUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, var(--reveal-y, 8px), 0) scale3d(var(--reveal-scale, 0.98), var(--reveal-scale, 0.98), 1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.text-reveal-item {
+  animation: textRevealUp var(--reveal-duration, 380ms) var(--ease-reveal) var(--reveal-delay, 0ms) both;
+}
+
+/* Hardware-Accelerated Elastic Validation Error Shake */
+@keyframes shakeError {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  20%, 60% { transform: translate3d(-4px, 0, 0); }
+  40%, 80% { transform: translate3d(4px, 0, 0); }
+}
+
+.animate-shake {
+  animation: shakeError 250ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* DOM Boundary Isolation & Paint Containment */
+.chart-containment {
+  isolation: isolate;
+  contain: layout style;
+}
+
+/* Mobile Safari Auto-Zoom Prevention */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Accessibility: Prefers Reduced Motion System Constraint */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .btn-tactile:active {
+    transform: none !important;
+  }
+  .animate-shake {
+    animation: none !important;
+  }
 }
