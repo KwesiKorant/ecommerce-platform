@@ -1,0 +1,118 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  ARCHIVE
+  STATUS_CHANGE
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  role         Role     @default(CUSTOMER)
+  orders       Order[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([email])
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+
+  @@index([slug])
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  title       String
+  slug        String      @unique
+  description String
+  price       Decimal     @db.Decimal(12, 2) // Canonical retail price
+  stock       Int         @default(0)
+  imageUrl    String
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  isActive    Boolean     @default(true)
+  isArchived  Boolean     @default(false)
+  archivedAt  DateTime?
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([categoryId, isArchived, isActive])
+  @@index([slug])
+  @@index([title])
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique // e.g., "ORD-2026-92F1"
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  totalAmount     Decimal     @db.Decimal(12, 2) // Server-calculated authoritative sum
+  status          OrderStatus @default(PROCESSING)
+  shippingAddress String      // Serialized JSON address payload
+  items           OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  quantity  Int
+  unitPrice Decimal  @db.Decimal(12, 2) // Snapshot of unit price at exact time of purchase
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model AuditLog {
+  id          String      @id @default(cuid())
+  entityType  String      // "PRODUCT" or "ORDER"
+  entityId    String
+  action      AuditAction
+  details     String      // Serialized JSON string (e.g. stock adjustment, order state transition)
+  performedBy String      // User ID or "system"
+  timestamp   DateTime    @default(now())
+
+  @@index([entityType, entityId])
+  @@index([performedBy])
+  @@index([timestamp])
+}
