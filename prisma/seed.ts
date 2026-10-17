@@ -150,7 +150,7 @@ async function main() {
       description: "Self-adjusting dynamic lumbar resistance mechanism, 4D multi-directional armrests, and breathable high-tensile elastomeric mesh.",
       price: 449.99,
       stock: 6,
-      imageUrl: "https://images.unsplash.com/photo-1580481077195-c22ae2b1e2a0?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1589384267710-7a170981ca78?auto=format&fit=crop&w=800&q=80",
       categorySlug: "ergonomics",
     },
     {
@@ -177,7 +177,7 @@ async function main() {
       description: "Machined from Grade 5 Titanium bar stock with ceramic ball bearing bolt-action mechanism and pressurized Fisher Space Pen cartridge.",
       price: 59.99,
       stock: 18,
-      imageUrl: "https://images.unsplash.com/photo-1585336261026-c2a7925e01c1?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=800&q=80",
       categorySlug: "lifestyle",
     },
   ];
