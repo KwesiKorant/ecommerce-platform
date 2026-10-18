@@ -39,6 +39,10 @@ const SHOWCASE_HERO_FALLBACK_IMAGES = [
     alt: "Kinematic Lumbar Ergonomic Mesh Chair",
   },
   {
+    src: "https://images.unsplash.com/photo-1593062096033-9a26b09da705?auto=format&fit=crop&w=800&q=80",
+    alt: "Arcfield Studio Desk Setup",
+  },
+  {
     src: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
     alt: "Ultra-Wide 4K Studio Display",
   },
@@ -148,9 +152,9 @@ export default function StorefrontPage() {
         {/* Editorial Spotlight Hero Banner (Direction C) */}
         <section className="relative rounded-2xl sm:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-linear-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950 p-5 sm:p-8 lg:p-10 mb-6 sm:mb-10 shadow-xs overflow-hidden">
           <div className="relative z-10 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 text-[10px] sm:text-xs font-mono font-medium mb-3 sm:mb-4">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 text-[10px] sm:text-xs font-mono font-medium mb-3 sm:mb-4 border border-zinc-200/60 dark:border-zinc-800/60">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>SERIES 2026 &bull; DROP 01</span>
+              <span>ARCFIELD STUDIO SETUP &bull; IN STOCK</span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.15]">
               The Desk Setup.
@@ -169,7 +173,7 @@ export default function StorefrontPage() {
                 }}
                 className="inline-flex items-center gap-2 px-4 py-2 sm:px-4.5 sm:py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs sm:text-sm font-semibold shadow-xs hover:bg-zinc-800 dark:hover:bg-white btn-tactile cursor-pointer"
               >
-                <span>Browse {products.length > 0 ? products.length : 10} Curated Pieces</span>
+                <span>Browse {products.length > 0 ? products.length : 11} Curated Pieces</span>
                 <ArrowDown className="w-3.5 h-3.5" />
               </button>
 
@@ -182,17 +186,43 @@ export default function StorefrontPage() {
             </div>
           </div>
 
-          {/* Multi-Tier Concentric Radial Ambient Glow (Dimming Outward) */}
+          {/* Stepped Concentric Radial Wavefront (Anchored at Bottom-Right Corner) */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute right-0 top-0 bottom-0 w-3/4 sm:w-1/2 overflow-hidden rounded-r-2xl sm:rounded-r-3xl select-none"
+            className="pointer-events-none absolute bottom-0 right-0 w-full sm:w-2/3 h-full overflow-hidden rounded-br-2xl sm:rounded-br-3xl select-none"
           >
-            {/* Layer 3: Outer Ambient Veil (Dimmest, widest spread ~1.5% - 2%) */}
-            <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[460px] sm:h-[460px] rounded-full bg-radial from-emerald-500/4 via-indigo-500/2 to-transparent blur-3xl" />
-            {/* Layer 2: Mid Diffuse Halo (Intermediate spread ~4% - 5%) */}
-            <div className="absolute -right-8 top-1/2 -translate-y-1/2 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-radial from-indigo-500/8 via-emerald-500/4 to-transparent blur-2xl" />
-            {/* Layer 1: Inner Focal Core (Nucleus, ~8% - 10% emerald/indigo blend) */}
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 w-36 h-36 sm:w-48 sm:h-48 rounded-full bg-radial from-emerald-500/12 via-indigo-500/6 to-transparent blur-xl" />
+            {/* Baseline radial gradient fanning from bottom-right angle */}
+            <div className="absolute inset-0 bg-radial-[at_100%_100%] from-emerald-500/12 via-indigo-500/6 to-transparent" />
+
+            {/* Concentric Tier 5: Outer Ambient Arc (dimmest ~5% emerald) */}
+            <div
+              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[620px] sm:w-[900px] h-[620px] sm:h-[900px] rounded-full border border-emerald-500/15 dark:border-emerald-400/12 bg-radial from-emerald-500/6 via-transparent to-transparent pointer-events-none"
+              style={{ contain: "layout style paint" }}
+            />
+
+            {/* Concentric Tier 4: Diffuse Outer Ring (~8% indigo) */}
+            <div
+              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[460px] sm:w-[660px] h-[460px] sm:h-[660px] rounded-full border border-indigo-500/20 dark:border-indigo-400/16 bg-radial from-indigo-500/10 via-indigo-500/3 to-transparent pointer-events-none"
+              style={{ contain: "layout style paint" }}
+            />
+
+            {/* Concentric Tier 3: Mid Wave Ring (~12% emerald) */}
+            <div
+              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[320px] sm:w-[460px] h-[320px] sm:h-[460px] rounded-full border border-emerald-500/25 dark:border-emerald-400/20 bg-radial from-emerald-500/14 via-emerald-500/5 to-transparent pointer-events-none"
+              style={{ contain: "layout style paint" }}
+            />
+
+            {/* Concentric Tier 2: Inner Halo Ring (~16% indigo) */}
+            <div
+              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[200px] sm:w-[290px] h-[200px] sm:h-[290px] rounded-full border border-indigo-500/30 dark:border-indigo-400/25 bg-radial from-indigo-500/18 via-indigo-500/8 to-transparent pointer-events-none"
+              style={{ contain: "layout style paint" }}
+            />
+
+            {/* Concentric Tier 1: Core Nucleus at Bottom-Right Corner (~24% emerald/indigo) */}
+            <div
+              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[100px] sm:w-[140px] h-[100px] sm:h-[140px] rounded-full border border-emerald-500/40 dark:border-emerald-400/35 bg-radial from-emerald-500/26 via-indigo-500/16 to-transparent pointer-events-none"
+              style={{ contain: "layout style paint" }}
+            />
           </div>
         </section>
 

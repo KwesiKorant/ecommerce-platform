@@ -180,6 +180,15 @@ async function main() {
       imageUrl: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=800&q=80",
       categorySlug: "lifestyle",
     },
+    {
+      title: "Arcfield Studio Desk Setup",
+      slug: "arcfield-studio-desk-setup",
+      description: "Complete studio workspace system integrating solid American walnut surface, motorized dual-motor sit-stand chassis, CNC aluminum cable management rail, and built-in Qi2 fast wireless charging.",
+      price: 899.99,
+      stock: 5,
+      imageUrl: "https://images.unsplash.com/photo-1593062096033-9a26b09da705?auto=format&fit=crop&w=800&q=80",
+      categorySlug: "ergonomics",
+    },
   ];
 
   const products: Record<string, string> = {};
