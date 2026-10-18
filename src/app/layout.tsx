@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 import { OfflineIndicator } from "@/components/ui/offline-indicator";
 import { ScrollToTopButton } from "@/components/ui/scroll-to-top";
+import { GlobalCartModals } from "@/components/layout/global-cart-modals";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 selection:bg-zinc-200 dark:selection:bg-zinc-800">
         <Providers>
           {children}
+          <GlobalCartModals />
           <OfflineIndicator />
           <ScrollToTopButton />
         </Providers>

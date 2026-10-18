@@ -341,6 +341,19 @@ async function runTestSuite() {
     });
 
     assert(adminProductRes.status === 201, "Admin calling POST /api/v1/products receives HTTP 201 CREATED");
+    const adminProductJson = await adminProductRes.json();
+    const createdAdminProductId = adminProductJson.data?.product?.id;
+
+    // Immediately purge the test product so it never leaks onto the public catalog
+    if (createdAdminProductId) {
+      await fetch(`${BASE_URL}/api/v1/products/${createdAdminProductId}?permanent=true`, {
+        method: "DELETE",
+        headers: {
+          Cookie: adminCookie,
+          "X-Forwarded-For": randomIp(),
+        },
+      });
+    }
 
     // Option B SoD: Admin calling POST /api/v1/orders receives HTTP 403 Forbidden
     const adminOrderRes = await fetch(`${BASE_URL}/api/v1/orders`, {
@@ -399,16 +412,7 @@ async function runTestSuite() {
           Cookie: customerCookie,
           "X-Forwarded-For": floodIp,
         },
-        body: JSON.stringify({
-          items: [{ productId: testProductId, quantity: 1 }],
-          shippingAddress: {
-            fullName: "Flood Tester",
-            addressLine1: "100 Flood Avenue",
-            city: "Accra",
-            postalCode: "GA-999",
-            country: "Ghana",
-          },
-        }),
+        body: JSON.stringify({ items: [] }),
       });
 
       if (floodRes.status === 429) {

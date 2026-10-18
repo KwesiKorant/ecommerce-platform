@@ -1,4 +1,4 @@
-import React from "react";
+import React, { cache } from "react";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -10,10 +10,13 @@ interface ProductPageProps {
 
 export const instant = false;
 
-export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const { slug } = await params;
-
-  const product = await prisma.product.findFirst({
+/**
+ * Deduplicated database query cache per request lifecycle.
+ * Guarantees that generateMetadata and ProductPage share a single
+ * execution, eliminating redundant roundtrips to PostgreSQL.
+ */
+const getProductBySlug = cache(async (slug: string) => {
+  return await prisma.product.findFirst({
     where: {
       slug,
       isArchived: false,
@@ -21,10 +24,15 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     },
     include: {
       category: {
-        select: { name: true },
+        select: { id: true, name: true, slug: true },
       },
     },
   });
+});
+
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return {
@@ -53,25 +61,13 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-
-  const product = await prisma.product.findFirst({
-    where: {
-      slug,
-      isArchived: false,
-      isActive: true,
-    },
-    include: {
-      category: {
-        select: { id: true, name: true, slug: true },
-      },
-    },
-  });
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
 
-  // Fetch complementary gear from the same category
+  // Fetch complementary gear from the same category with lean projection
   const rawRelated = await prisma.product.findMany({
     where: {
       categoryId: product.categoryId,
@@ -79,7 +75,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
       isArchived: false,
       isActive: true,
     },
-    include: {
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      description: true,
+      price: true,
+      stock: true,
+      imageUrl: true,
+      categoryId: true,
+      isActive: true,
+      isArchived: true,
+      createdAt: true,
+      updatedAt: true,
       category: {
         select: { id: true, name: true, slug: true },
       },

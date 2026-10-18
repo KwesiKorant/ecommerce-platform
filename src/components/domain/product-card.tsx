@@ -61,7 +61,11 @@ export function ProductCard({ product, onSelect }: ProductCardProps) {
       onClick={onSelect}
       className="group relative flex flex-col rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 p-4 transition-colors duration-150 hover:border-zinc-400 dark:hover:border-zinc-600 product-card shadow-xs"
     >
-      <Link href={`/products/${product.slug}`} className="block focus:outline-none">
+      <Link
+        href={`/products/${product.slug}`}
+        prefetch={true}
+        className="block focus:outline-none"
+      >
         {/* Product Image Thumbnail */}
         <div className="relative aspect-4/3 w-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800/60 mb-3.5">
           <Image

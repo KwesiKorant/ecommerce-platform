@@ -4,8 +4,6 @@ import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/layout/header";
 import { ProductCard } from "@/components/domain/product-card";
-import { CartSheet } from "@/components/domain/cart-sheet";
-import { CheckoutWizard } from "@/components/domain/checkout-wizard";
 import { ScrollToTopSentinel } from "@/components/ui/scroll-to-top";
 import { useProductRealtime } from "@/hooks/use-product-realtime";
 import { Sparkles, Layers, SlidersHorizontal, PackageSearch } from "lucide-react";
@@ -34,7 +32,6 @@ interface Category {
 export default function StorefrontPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   // Supabase Realtime CDC for instant out-of-stock badge updates across clients
   useProductRealtime();
@@ -202,15 +199,6 @@ export default function StorefrontPage() {
           </div>
         )}
       </main>
-
-      {/* Cart Drawer Slideout Sheet */}
-      <CartSheet onStartCheckout={() => setIsCheckoutOpen(true)} />
-
-      {/* Kinematic FLIP Checkout Wizard Modal */}
-      <CheckoutWizard
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-      />
 
       {/* Footer */}
       <footer className="mt-16 border-t border-zinc-200/80 dark:border-zinc-800/80 py-8 bg-white dark:bg-zinc-900/60 text-xs text-zinc-500">

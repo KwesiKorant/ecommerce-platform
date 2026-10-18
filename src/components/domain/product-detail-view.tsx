@@ -22,8 +22,6 @@ import {
   Share2,
 } from "lucide-react";
 import { Header } from "@/components/layout/header";
-import { CartSheet } from "@/components/domain/cart-sheet";
-import { CheckoutWizard } from "@/components/domain/checkout-wizard";
 import { ProductCard } from "@/components/domain/product-card";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { useCartStore } from "@/store/use-cart-store";
@@ -53,11 +51,11 @@ interface ProductDetailViewProps {
 export function ProductDetailView({ product, relatedProducts }: ProductDetailViewProps) {
   const addItem = useCartStore((state) => state.addItem);
   const openCart = useCartStore((state) => state.openCart);
+  const openCheckout = useCartStore((state) => state.openCheckout);
   const { isAdmin } = useAuthSession();
 
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [activeTab, setActiveTab] = useState<"specs" | "shipping" | "warranty">("specs");
 
@@ -102,7 +100,7 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
       },
       quantity
     );
-    setIsCheckoutOpen(true);
+    openCheckout();
   };
 
   const handleShare = () => {
@@ -572,15 +570,6 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
           </section>
         )}
       </main>
-
-      {/* Cart Drawer Slideout Sheet */}
-      <CartSheet onStartCheckout={() => setIsCheckoutOpen(true)} />
-
-      {/* Kinematic Checkout Wizard */}
-      <CheckoutWizard
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-      />
     </div>
   );
 }

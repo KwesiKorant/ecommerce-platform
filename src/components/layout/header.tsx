@@ -74,19 +74,6 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
               <Package className="w-3.5 h-3.5" />
               <span>Orders</span>
             </Link>
-            {user && (
-              <Link
-                href="/account"
-                className={`px-3 py-1.5 rounded-md transition-colors btn-tactile flex items-center gap-1 ${
-                  pathname === "/account"
-                    ? "text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800"
-                    : "hover:text-zinc-900 dark:hover:text-zinc-100"
-                }`}
-              >
-                <UserIcon className="w-3.5 h-3.5" />
-                <span>Account</span>
-              </Link>
-            )}
             {user?.role === "ADMIN" && (
               <Link
                 href="/admin"
@@ -117,16 +104,36 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
 
           {/* Auth State */}
           {user ? (
-            <div className="flex items-center gap-2 pl-1 border-l border-zinc-200 dark:border-zinc-800">
+            <div className="flex items-center gap-1.5 pl-1 border-l border-zinc-200 dark:border-zinc-800">
               <Link
                 href="/account"
-                className="hidden lg:flex flex-col text-right hover:opacity-80 transition-opacity"
-                title="Go to Account & Saved Addresses"
+                title="View Customer Profile & Saved Addresses"
+                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-xl border transition-all btn-tactile cursor-pointer ${
+                  pathname === "/account"
+                    ? "bg-zinc-100 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 shadow-xs"
+                    : "border-transparent hover:border-zinc-200 dark:hover:border-zinc-800 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/70"
+                }`}
               >
-                <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200 truncate max-w-[110px]">
-                  {user.fullName}
-                </span>
-                <span className="text-[10px] font-mono text-zinc-400">{user.role}</span>
+                {/* Semantic Profile Avatar / Icon */}
+                <div className="w-7 h-7 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center text-xs font-semibold tracking-wide shrink-0 shadow-xs">
+                  {user.fullName
+                    ? user.fullName
+                        .split(" ")
+                        .map((n) => n[0])
+                        .slice(0, 2)
+                        .join("")
+                        .toUpperCase()
+                    : <UserIcon className="w-3.5 h-3.5" />}
+                </div>
+
+                <div className="hidden sm:flex flex-col text-left leading-tight pr-0.5">
+                  <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 truncate max-w-[120px]">
+                    {user.fullName}
+                  </span>
+                  <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-medium">
+                    {user.role}
+                  </span>
+                </div>
               </Link>
               <button
                 type="button"
