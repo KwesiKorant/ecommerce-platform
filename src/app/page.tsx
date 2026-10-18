@@ -189,7 +189,7 @@ export default function StorefrontPage() {
           {/* Stepped Concentric Radial Wavefront (Feathered Corner Emanation, Zero Hard Cuts) */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl select-none opacity-85"
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl select-none opacity-70"
             style={{
               contain: "layout style paint",
               maskImage: "radial-gradient(circle at bottom right, black 25%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.3) 72%, transparent 88%)",
