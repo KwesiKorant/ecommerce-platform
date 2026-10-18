@@ -225,7 +225,7 @@ export default function StorefrontPage() {
             <span>&bull;</span>
             <span>2-Year Warranty</span>
             <span>&bull;</span>
-            <span>&copy; {new Date().getFullYear()} Arcfield Inc.</span>
+            <span>&copy; 2026 Arcfield Inc.</span>
           </div>
         </div>
       </footer>
