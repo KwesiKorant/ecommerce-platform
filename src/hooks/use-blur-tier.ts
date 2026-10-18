@@ -30,20 +30,48 @@ export function useBlurTier(): { blurTier: BlurTier; isHighTier: boolean } {
         return "low";
       }
 
-      // 3. Desktop Isolation: Only evaluate CPU/RAM constraints on touch/mobile devices
+      // 3. Touch & Mobile GPU Constraint Evaluation
       const isTouchDevice = navigator.maxTouchPoints > 1;
 
       if (isTouchDevice) {
-        // Low-tier mobile: Less than 4 cores or under 3GB device memory
+        // Query WebGL unmasked renderer to detect entry/mid mobile GPUs directly
+        try {
+          const canvas = document.createElement("canvas");
+          const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+          if (gl && "getExtension" in gl) {
+            const debugInfo = (gl as WebGLRenderingContext).getExtension("WEBGL_debug_renderer_info");
+            if (debugInfo) {
+              const renderer = (
+                (gl as WebGLRenderingContext).getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || ""
+              ).toLowerCase();
+
+              // Flag entry/mid-tier mobile GPUs with constrained TBDR raster fillrates
+              if (
+                renderer.includes("mali-") ||
+                renderer.includes("powervr") ||
+                renderer.includes("adreno 5") ||
+                renderer.includes("adreno 61") ||
+                renderer.includes("adreno (tm) 5") ||
+                renderer.includes("adreno (tm) 61")
+              ) {
+                return "low";
+              }
+            }
+          }
+        } catch {
+          // Fallback to hardware concurrency and viewport
+        }
+
+        // Low-tier mobile: Less than 6 cores, under 4GB device memory, or compact mobile screen
         const cores = navigator.hardwareConcurrency || 4;
         const memory = nav.deviceMemory || 4;
 
-        if (cores < 4 || memory < 3) {
+        if (cores < 6 || memory < 4 || (typeof window !== "undefined" && window.innerWidth < 768)) {
           return "low";
         }
       }
 
-      // Desktop Macs and PCs default to high-tier
+      // Desktop Macs and high-power PCs default to high-tier
       return "high";
     }
 

@@ -26,8 +26,8 @@ export function CartSheet({ onStartCheckout }: CartSheetProps) {
   const subtotal = items.reduce((acc, i) => acc + i.price * i.quantity, 0);
   const totalItemCount = items.reduce((acc, i) => acc + i.quantity, 0);
 
-  // Mobile bottom-sheet touch mechanics
-  const { isMobile, dragProps } = useMobileSheetDrag({
+  // Mobile bottom-sheet touch mechanics (scoped strictly to top drag notch & header area)
+  const { isMobile, dragProps, dragHandleProps } = useMobileSheetDrag({
     onDismiss: closeCart,
   });
 
@@ -63,36 +63,43 @@ export function CartSheet({ onStartCheckout }: CartSheetProps) {
                   : "w-screen max-w-md h-full border-l border-zinc-200 dark:border-zinc-800"
               }`}
             >
-              {/* Mobile Sheet Drag Handle */}
-              {isMobile && (
-                <div className="pt-3 pb-1 flex justify-center">
-                  <div className="w-10 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
-                </div>
-              )}
+              {/* Exclusive Mobile Drag Zone: Top Drag Notch + Header Area */}
+              <div
+                {...dragHandleProps}
+                className={isMobile ? "cursor-grab active:cursor-grabbing select-none" : ""}
+              >
+                {/* Mobile Sheet Drag Handle Notch */}
+                {isMobile && (
+                  <div className="pt-3 pb-1 flex justify-center">
+                    <div className="w-10 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                  </div>
+                )}
 
-              {/* Sheet Header */}
-              <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <ShoppingBag className="w-5 h-5 text-zinc-900 dark:text-zinc-100" />
-                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                    Your Shopping Cart
-                  </h2>
-                  <span className="px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-mono text-zinc-600 dark:text-zinc-400">
-                    {totalItemCount}
-                  </span>
+                {/* Sheet Header */}
+                <div className="p-4 sm:p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShoppingBag className="w-5 h-5 text-zinc-900 dark:text-zinc-100" />
+                    <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                      Your Shopping Cart
+                    </h2>
+                    <span className="px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-mono text-zinc-600 dark:text-zinc-400">
+                      {totalItemCount}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={closeCart}
+                    onPointerDown={(e) => e.stopPropagation()}
+                    aria-label="Close cart drawer"
+                    className="p-2 rounded-full text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 btn-tactile cursor-pointer"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={closeCart}
-                  aria-label="Close cart drawer"
-                  className="p-2 rounded-full text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 btn-tactile cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
               </div>
 
-              {/* Sheet Body: Line Items or Empty State */}
-              <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+              {/* Sheet Body: Line Items or Empty State (Free scrolling, zero drag collision) */}
+              <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 touch-pan-y">
                 {items.length === 0 ? (
                   // Zero-Data Ghost Wireframe Silhouette Empty State
                   <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-center p-6">

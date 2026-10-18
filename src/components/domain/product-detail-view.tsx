@@ -217,25 +217,26 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
 
-              {/* Category Pill Tag */}
+              {/* Category Pill Tag (Zero-Blur High-Contrast Surface) */}
               {product.category && (
-                <div className="absolute top-4 left-4 px-3 py-1 rounded-lg bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md text-xs font-semibold text-zinc-800 dark:text-zinc-200 shadow-xs border border-zinc-200/50 dark:border-zinc-700/50">
+                <div className="absolute top-4 left-4 px-3 py-1 rounded-lg bg-white/95 dark:bg-zinc-900/95 text-xs font-semibold text-zinc-800 dark:text-zinc-200 shadow-2xs border border-zinc-200/80 dark:border-white/10 select-none">
                   {product.category.name}
                 </div>
               )}
 
-              {/* Live Inventory Status Overlay */}
-              <div className="absolute top-4 right-4">
+              {/* Live Inventory Status Overlay (Zero-Blur High-Contrast Surface + Compositor Dot Pulse) */}
+              <div className="absolute top-4 right-4 select-none">
                 {isOutOfStock ? (
-                  <span className="px-3 py-1 rounded-lg bg-rose-500/90 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider shadow-xs">
+                  <span className="px-3 py-1 rounded-lg bg-rose-600 text-white text-xs font-bold uppercase tracking-wider shadow-2xs">
                     Sold Out
                   </span>
                 ) : isLowStock ? (
-                  <span className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/95 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider shadow-xs animate-pulse">
+                  <span className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500 text-white text-xs font-bold uppercase tracking-wider shadow-2xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                     Only {product.stock} Units Remaining
                   </span>
                 ) : (
-                  <span className="px-3 py-1 rounded-lg bg-emerald-500/20 backdrop-blur-md text-emerald-800 dark:text-emerald-300 border border-emerald-500/40 text-xs font-semibold shadow-xs">
+                  <span className="px-3 py-1 rounded-lg bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-xs font-semibold shadow-2xs">
                     In Stock & Ready to Ship
                   </span>
                 )}

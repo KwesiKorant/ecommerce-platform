@@ -1,7 +1,7 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
-import type { PanInfo } from "motion/react";
+import React, { useSyncExternalStore } from "react";
+import { useDragControls, type PanInfo } from "motion/react";
 
 function subscribeMediaQuery(callback: () => void) {
   if (typeof window === "undefined") return () => {};
@@ -27,7 +27,8 @@ export interface MobileSheetDragOptions {
 
 /**
  * Ergonomic Mobile Sheet Drag-to-Dismiss Hook
- * Handles SSR-safe mobile detection, directional touch resistance, and velocity projection.
+ * Scoped Drag Zone: Restricts dragging initiation exclusively to the top drag notch
+ * and header area via useDragControls, leaving the sheet content freely scrollable.
  */
 export function useMobileSheetDrag({
   onDismiss,
@@ -40,6 +41,8 @@ export function useMobileSheetDrag({
     getServerSnapshotMediaQuery
   );
 
+  const dragControls = useDragControls();
+
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (!isMobile) return;
 
@@ -49,15 +52,30 @@ export function useMobileSheetDrag({
     }
   };
 
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (isMobile) {
+      dragControls.start(e);
+    }
+  };
+
   return {
     isMobile,
+    dragControls,
     dragProps: isMobile
       ? {
           drag: "y" as const,
+          dragControls,
+          dragListener: false, // Ensures dragging ONLY triggers from elements attached to dragHandleProps
           dragDirectionLock: true,
           dragConstraints: { top: 0, bottom: 0 },
           dragElastic: { top: 0.05, bottom: 0.75 },
           onDragEnd: handleDragEnd,
+        }
+      : {},
+    dragHandleProps: isMobile
+      ? {
+          onPointerDown: handlePointerDown,
+          style: { touchAction: "none" as const },
         }
       : {},
   };

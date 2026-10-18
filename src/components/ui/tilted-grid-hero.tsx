@@ -3,46 +3,47 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-/* ── the curved row ──────────────────────────────────────────────
- * Scroll Tilted Grid turned on its side, with the tilt drawn as a curve.
- * One row of images streams from right to left around the inside of a
- * cylinder. The centre faces you flat, the ends bend toward you so each
- * end image curves along its length, and the ends fade into the page.
+/* ── Arcfield 3D Cylindrical Equipment Showcase Ribbon ─────────────
+ * High-performance 3D cylinder rotating continuous studio equipment tiles.
  *
- * Arc-AA Performance & Interaction Standards:
- * - 60/120 FPS Compositor-Only Transform: Mutates strictly transform & opacity.
- * - Zero-Cost Pointer/Touch Interactivity: Dragging updates a single CSS custom
- *   property (--drag-yaw) on the stage container without triggering React
- *   re-renders or child DOM updates.
- * - 1-Second Idle Pause & Spring Return: Automatically pauses on interaction,
- *   holds during gesture, and returns smoothly with spring easing before resuming.
- * - Wide-Screen Anti-Smear Protection: Calibrated 50° curve, 20% alpha fade, and
- *   strict backface-visibility: hidden to prevent 3D depth-buffer collisions.
- * - IntersectionObserver Viewport Culling: Drops GPU consumption to 0% offscreen.
- * ─────────────────────────────────────────────────────────────── */
+ * Stabilization Enhancements (Option 2):
+ * - Seamless Unbroken Cards: Slices set to 1 to eliminate fractional subpixel
+ *   rasterizer gaps and vertical seam distortion lines.
+ * - Deterministic CSS Timing: Removed asynchronous React state updates on animation
+ *   iterations (setShown) to mathematically eliminate dropped-frame tile stacking
+ *   and 3D depth-buffer z-fighting.
+ * - Instant 0ms Open: Synchronous initial layout initialization eliminating
+ *   delayed opacity-0 client hydration flashes.
+ * - Zero Performance Cost Compositor Architecture: Mutates strictly transform & opacity.
+ * - IntersectionObserver Culling: Drops GPU consumption to 0% when scrolled offscreen.
+ * ─────────────────────────────────────────────────────────────────── */
+
+function getOptimizedHeroSrc(src: string): string {
+  if (!src) return src;
+  if (src.includes("images.unsplash.com")) {
+    try {
+      const parsed = new URL(src);
+      parsed.searchParams.set("w", "600");
+      parsed.searchParams.set("q", "75");
+      parsed.searchParams.set("auto", "format");
+      return parsed.toString();
+    } catch {
+      return src;
+    }
+  }
+  return src;
+}
 
 // Camera distance from the screen, as a multiple of the cylinder's radius.
 const CAMERA = 1.6;
 
-/**
- * Cylinder radius, as a share of the hero's width, that puts the frame's
- * edge `bend` radians round the arc as seen through the camera:
- * r·sinθ · CAMERA / (CAMERA − 1 + cosθ) = width / 2, solved for r.
- */
 function arc(bend: number) {
   return (CAMERA - 1 + Math.cos(bend)) / (2 * CAMERA * Math.sin(bend));
 }
 
-// A tile is never wider than this share of the hero, so a phone still
-// shows its neighbours instead of one tile edge to edge.
+// Tile is never wider than this share of the container, ensuring adjacent neighbors remain visible
 const MAX_WIDTH = 55;
 
-/**
- * Lays the loop on the cylinder. Angles come back in degrees:
- * `unit` is the arc one tile-height spans, `limit` how far round a tile's centre
- * can go before the whole tile is off-screen, and `sweep` how far round
- * the loop's ends sit.
- */
 function measure(
   width: number,
   height: number,
@@ -93,13 +94,12 @@ export type TiltedGridHeroProps = {
   axis?: number;
   /**
    * How far the row bends by the frame's edge, in degrees.
-   * Calibrated to 50° to prevent perspective smearing on wide monitors.
    * @default 50
    */
   curve?: number;
   /** Width of the fade mask at each end, as a percentage of container width. @default 20 */
   fade?: number;
-  /** Number of vertical strips per tile facet. @default 12 */
+  /** Number of vertical strips per tile facet. Set to 1 for seamless unbroken cards. @default 1 */
   slices?: number;
   /** Children rendered above the 3D stage. */
   children?: React.ReactNode;
@@ -115,7 +115,7 @@ export function TiltedGridHero({
   axis = 50,
   curve = 50,
   fade = 20,
-  slices = 12,
+  slices = 1,
   children,
   className,
   ...props
@@ -131,17 +131,16 @@ export function TiltedGridHero({
   // Viewport intersection culling
   const [isInView, setIsInView] = React.useState(true);
 
-  // Layout measurement state
-  const [layout, setLayout] = React.useState<ReturnType<typeof measure> | null>(null);
-
-  // Dynamic tile image wrapping index state
-  const [shown, setShown] = React.useState<Record<number, number>>({});
+  // Synchronous initial layout measurement for 0ms instant display without hydration flash
+  const [layout, setLayout] = React.useState<ReturnType<typeof measure>>(() =>
+    measure(1200, 260, tileHeight, aspectRatio, gap, bend)
+  );
 
   // Interactivity state
   const [isInteracting, setIsInteracting] = React.useState(false);
   const [isSpringingBack, setIsSpringingBack] = React.useState(false);
 
-  // Drag tracking refs to avoid React state re-renders during active gestures
+  // Drag tracking refs
   const isDraggingRef = React.useRef(false);
   const startXRef = React.useRef(0);
   const currentYawRef = React.useRef(0);
@@ -173,11 +172,11 @@ export function TiltedGridHero({
       if (width <= 0 || height <= 0) return;
       const next = measure(width, height, tileHeight, aspectRatio, gap, bend);
       setLayout((prev) =>
-        prev?.columns === next.columns &&
+        prev.columns === next.columns &&
         prev.sweep === next.sweep &&
         prev.unit === next.unit
           ? prev
-          : next,
+          : next
       );
     });
     ro.observe(el);
@@ -203,8 +202,7 @@ export function TiltedGridHero({
     };
   }, []);
 
-  const { columns, sweep, unit, limit } =
-    layout ?? measure(1200, 480, tileHeight, aspectRatio, gap, bend);
+  const { columns, sweep, unit, limit } = layout;
 
   // Length calculation relative to container queries (cqh / cqw)
   const u = (n: number) =>
@@ -232,7 +230,6 @@ export function TiltedGridHero({
     `.${tile}{animation-play-state:${playState};backface-visibility:hidden;-webkit-backface-visibility:hidden;}` +
     `@media(prefers-reduced-motion:reduce){.${tile}{animation-play-state:paused!important}}`;
 
-  const share = aspectRatio / slices;
   const duration = columns * speed;
   const mask = `linear-gradient(90deg,transparent,#000 ${fade}%,#000 ${
     100 - fade
@@ -240,12 +237,11 @@ export function TiltedGridHero({
 
   /* ── Zero-Performance-Cost Drag / Swipe Event Handlers ── */
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return; // Only primary button
+    if (e.button !== 0) return;
     isDraggingRef.current = true;
     startXRef.current = e.clientX;
     currentYawRef.current = 0;
 
-    // Clear any active timers
     if (autoResumeTimerRef.current) clearTimeout(autoResumeTimerRef.current);
     if (springCleanupTimerRef.current) clearTimeout(springCleanupTimerRef.current);
 
@@ -255,7 +251,7 @@ export function TiltedGridHero({
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch {
-      // Fallback for browsers that don't support pointer capture
+      // Fallback
     }
   };
 
@@ -263,11 +259,9 @@ export function TiltedGridHero({
     if (!isDraggingRef.current || !stageRef.current) return;
 
     const deltaX = e.clientX - startXRef.current;
-    // Calibrated sensitivity: 1px drag = ~0.14 degrees of cylinder yaw rotation
     const dragYaw = deltaX * 0.14;
     currentYawRef.current = dragYaw;
 
-    // Mutate strictly the CSS custom property on the compositor container
     stageRef.current.style.setProperty("--drag-yaw", `${dragYaw.toFixed(3)}deg`);
   };
 
@@ -281,18 +275,15 @@ export function TiltedGridHero({
       // Fallback
     }
 
-    // Set 1-second idle delay before springing back and resuming auto-rotation
     autoResumeTimerRef.current = setTimeout(() => {
       if (!stageRef.current) {
         setIsInteracting(false);
         return;
       }
 
-      // Trigger compositor spring return to 0deg
       setIsSpringingBack(true);
       stageRef.current.style.setProperty("--drag-yaw", "0deg");
 
-      // Once the 650ms spring return finishes, resume the continuous CSS stream
       springCleanupTimerRef.current = setTimeout(() => {
         setIsSpringingBack(false);
         setIsInteracting(false);
@@ -322,12 +313,12 @@ export function TiltedGridHero({
     >
       <style>{css}</style>
 
-      {/* 3D Cylindrical Projection Stage */}
+      {/* 3D Cylindrical Projection Stage (Instantly visible, no hydration delay) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+        className="pointer-events-none absolute inset-0"
         style={{
-          opacity: layout ? 1 : 0,
+          opacity: 1,
           perspective: `${+(r * CAMERA).toFixed(3)}cqw`,
           perspectiveOrigin: `50% ${axis}%`,
           maskImage: mask,
@@ -348,8 +339,7 @@ export function TiltedGridHero({
           }}
         >
           {Array.from({ length: columns }, (_, t) => {
-            const first = columns - 1 - t;
-            const img = images[(shown[t] ?? first) % Math.max(images.length, 1)];
+            const img = images[t % Math.max(images.length, 1)];
 
             return (
               <div
@@ -365,50 +355,26 @@ export function TiltedGridHero({
                   WebkitBackfaceVisibility: "hidden",
                   animation: `${orbit} ${duration}s linear ${-t * speed}s infinite`,
                 }}
-                onAnimationIteration={(e) => {
-                  const lap = Math.round(e.elapsedTime / duration);
-                  setShown((prev) => {
-                    const next = lap * columns + first;
-                    return prev[t] === next ? prev : { ...prev, [t]: next };
-                  });
-                }}
               >
-                {Array.from({ length: slices }, (_, k) => (
-                  <div
-                    key={k}
-                    className={cn(
-                      "absolute top-0 overflow-hidden bg-zinc-200 dark:bg-zinc-800",
-                      k === 0 && "rounded-l-lg",
-                      k === slices - 1 && "rounded-r-lg"
-                    )}
-                    style={{
-                      left: u((aspectRatio - share) / 2),
-                      width:
-                        k === slices - 1 ? u(share) : `calc(${u(share)} + 1px)`,
-                      height: u(1),
-                      backfaceVisibility: "hidden",
-                      WebkitBackfaceVisibility: "hidden",
-                      transform: turn(
-                        (aspectRatio / 2 - (k + 0.5) * share) * unit
-                      ),
-                    }}
-                  >
-                    {img?.src ? (
-                      <img
-                        src={img.src}
-                        alt={k === 0 ? (img.alt ?? "") : ""}
-                        draggable={false}
-                        loading="eager"
-                        className="absolute top-0 max-w-none object-cover pointer-events-none"
-                        style={{
-                          left: u(-k * share),
-                          width: u(aspectRatio),
-                          height: u(1),
-                        }}
-                      />
-                    ) : null}
-                  </div>
-                ))}
+                {/* Seamless Unbroken Card (Zero Facet Seam Distortion) */}
+                <div
+                  className="absolute inset-0 overflow-hidden rounded-xl bg-zinc-200 dark:bg-zinc-800 shadow-sm border border-zinc-200/50 dark:border-white/10"
+                  style={{
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
+                  }}
+                >
+                  {img?.src ? (
+                    <img
+                      src={getOptimizedHeroSrc(img.src)}
+                      alt={img.alt ?? ""}
+                      draggable={false}
+                      loading="eager"
+                      decoding="async"
+                      className="w-full h-full object-cover pointer-events-none select-none"
+                    />
+                  ) : null}
+                </div>
               </div>
             );
           })}

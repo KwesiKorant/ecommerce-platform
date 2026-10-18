@@ -142,7 +142,7 @@ export default function StorefrontPage() {
             className="h-[140px] sm:h-[180px] md:h-[220px] lg:h-[260px] w-full rounded-2xl sm:rounded-3xl"
           >
             <div className="absolute top-2.5 left-3 sm:top-3.5 sm:left-4 z-10 pointer-events-none">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md text-[10px] sm:text-xs font-mono font-medium text-zinc-600 dark:text-zinc-400 border border-zinc-200/60 dark:border-zinc-800/60 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 dark:bg-zinc-900/95 text-[10px] sm:text-xs font-mono font-medium text-zinc-600 dark:text-zinc-400 border border-zinc-200/80 dark:border-zinc-800/80 shadow-2xs select-none">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 Featured Equipment
               </span>
@@ -187,48 +187,27 @@ export default function StorefrontPage() {
             </div>
           </div>
 
-          {/* Stepped Concentric Radial Wavefront (Feathered Corner Emanation, Zero Hard Cuts) */}
+          {/* Stepped Concentric Radial Wavefront (Zero-Overdraw Single-Pass Vector Wavefront) */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl select-none opacity-70"
-            style={{
-              contain: "layout style paint",
-              maskImage: "radial-gradient(circle at bottom right, black 25%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.3) 72%, transparent 88%)",
-              WebkitMaskImage: "radial-gradient(circle at bottom right, black 25%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.3) 72%, transparent 88%)",
-            }}
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl select-none"
+            style={{ contain: "layout style paint" }}
           >
-            {/* Baseline radial tone fanning from bottom-right angle */}
-            <div className="absolute inset-0 bg-radial-[at_100%_100%] from-emerald-500/10 via-indigo-500/5 to-transparent" />
+            {/* Ambient baseline corner radiance */}
+            <div className="absolute inset-0 bg-radial-[at_100%_100%] from-emerald-500/8 via-indigo-500/4 to-transparent" />
 
-            {/* Concentric Tier 5: Outer Ambient Arc (~15-20% reduced visibility) */}
-            <div
-              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[620px] sm:w-[860px] h-[620px] sm:h-[860px] rounded-full border border-emerald-500/10 dark:border-emerald-400/8 bg-radial from-emerald-500/4 via-transparent to-transparent pointer-events-none"
-              style={{ contain: "layout style paint" }}
-            />
-
-            {/* Concentric Tier 4: Diffuse Outer Ring */}
-            <div
-              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[460px] sm:w-[640px] h-[460px] sm:h-[640px] rounded-full border border-indigo-500/15 dark:border-indigo-400/12 bg-radial from-indigo-500/7 via-indigo-500/2 to-transparent pointer-events-none"
-              style={{ contain: "layout style paint" }}
-            />
-
-            {/* Concentric Tier 3: Mid Wave Ring */}
-            <div
-              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[320px] sm:w-[440px] h-[320px] sm:h-[440px] rounded-full border border-emerald-500/20 dark:border-emerald-400/16 bg-radial from-emerald-500/10 via-emerald-500/3 to-transparent pointer-events-none"
-              style={{ contain: "layout style paint" }}
-            />
-
-            {/* Concentric Tier 2: Inner Halo Ring */}
-            <div
-              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[200px] sm:w-[280px] h-[200px] sm:h-[280px] rounded-full border border-indigo-500/24 dark:border-indigo-400/20 bg-radial from-indigo-500/14 via-indigo-500/6 to-transparent pointer-events-none"
-              style={{ contain: "layout style paint" }}
-            />
-
-            {/* Concentric Tier 1: Core Nucleus at Bottom-Right Corner */}
-            <div
-              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[100px] sm:w-[130px] h-[100px] sm:h-[130px] rounded-full border border-emerald-500/30 dark:border-emerald-400/25 bg-radial from-emerald-500/20 via-indigo-500/12 to-transparent pointer-events-none"
-              style={{ contain: "layout style paint" }}
-            />
+            {/* Hardware-accelerated vector rings rendered in 1 single draw call */}
+            <svg
+              viewBox="0 0 800 400"
+              preserveAspectRatio="xMaxYMax slice"
+              className="absolute inset-0 w-full h-full pointer-events-none opacity-60 dark:opacity-50"
+            >
+              <circle cx="800" cy="400" r="100" fill="none" stroke="currentColor" strokeWidth="1" className="text-emerald-500/30 dark:text-emerald-400/25" />
+              <circle cx="800" cy="400" r="200" fill="none" stroke="currentColor" strokeWidth="1" className="text-indigo-500/25 dark:text-indigo-400/20" />
+              <circle cx="800" cy="400" r="330" fill="none" stroke="currentColor" strokeWidth="1" className="text-emerald-500/20 dark:text-emerald-400/16" />
+              <circle cx="800" cy="400" r="480" fill="none" stroke="currentColor" strokeWidth="1" className="text-indigo-500/15 dark:text-indigo-400/12" />
+              <circle cx="800" cy="400" r="660" fill="none" stroke="currentColor" strokeWidth="1" className="text-emerald-500/10 dark:text-emerald-400/8" />
+            </svg>
           </div>
         </section>
 

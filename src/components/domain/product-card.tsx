@@ -21,10 +21,29 @@ export interface ProductCardProps {
   onSelect?: () => void;
 }
 
+// Optimized thumbnail generator: requests a calibrated 480px width from CDN instead of 800px+
+function getOptimizedThumbnail(url: string): string {
+  if (!url) return url;
+  if (url.includes("images.unsplash.com")) {
+    try {
+      const parsed = new URL(url);
+      parsed.searchParams.set("w", "480");
+      parsed.searchParams.set("q", "75");
+      parsed.searchParams.set("auto", "format");
+      return parsed.toString();
+    } catch {
+      return url;
+    }
+  }
+  return url;
+}
+
 /**
  * Arc-AA Product Card
  * Strict Zero-Translate Desktop Card Stability (banning translateY(-2px)).
  * Hardware-accelerated zero-layout-shift scaleX progress scarcity bar.
+ * Zero-overdraw solid badge surfaces (eliminates multi-pass backdrop-blur GPU stalls).
+ * CSS content-visibility containment for 60/120 FPS offscreen viewport culling.
  */
 export function ProductCard({ product, onSelect }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
@@ -60,6 +79,10 @@ export function ProductCard({ product, onSelect }: ProductCardProps) {
     <article
       onClick={onSelect}
       className="group relative flex flex-col justify-between h-full rounded-xl sm:rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 p-2.5 sm:p-4 transition-colors duration-150 hover:border-zinc-400 dark:hover:border-zinc-600 product-card shadow-xs"
+      style={{
+        contentVisibility: "auto",
+        containIntrinsicSize: "0 340px",
+      }}
     >
       <div className="flex-1 flex flex-col">
         <Link
@@ -70,7 +93,7 @@ export function ProductCard({ product, onSelect }: ProductCardProps) {
           {/* Product Image Thumbnail */}
           <div className="relative aspect-4/3 w-full rounded-lg sm:rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800/60 mb-2 sm:mb-3">
             <Image
-              src={product.imageUrl}
+              src={getOptimizedThumbnail(product.imageUrl)}
               alt={product.title}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
@@ -78,25 +101,26 @@ export function ProductCard({ product, onSelect }: ProductCardProps) {
               loading="lazy"
             />
 
-            {/* Category Pill Tag */}
+            {/* Category Pill Tag (Zero-Blur High-Contrast Surface) */}
             {product.category && (
-              <div className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded sm:rounded-md bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md text-[9px] sm:text-[11px] font-medium text-zinc-700 dark:text-zinc-300 shadow-xs">
+              <div className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded sm:rounded-md bg-white/95 dark:bg-zinc-900/95 border border-zinc-200/80 dark:border-white/10 text-[9px] sm:text-[11px] font-medium text-zinc-700 dark:text-zinc-300 shadow-2xs pointer-events-none select-none">
                 {product.category.name}
               </div>
             )}
 
-            {/* Stock Badge Overlay */}
-            <div className="absolute top-1.5 right-1.5 sm:top-2.5 sm:right-2.5">
+            {/* Stock Badge Overlay (Zero-Blur High-Contrast Surface + Compositor Dot Pulse) */}
+            <div className="absolute top-1.5 right-1.5 sm:top-2.5 sm:right-2.5 pointer-events-none select-none">
               {isOutOfStock ? (
-                <span className="flex items-center gap-1 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded sm:rounded-md bg-rose-500/90 backdrop-blur-md text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-xs">
+                <span className="flex items-center gap-1 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded sm:rounded-md bg-rose-600 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-2xs">
                   Sold Out
                 </span>
               ) : isLowStock ? (
-                <span className="flex items-center gap-1 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded sm:rounded-md bg-amber-500/95 backdrop-blur-md text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-xs animate-pulse">
+                <span className="flex items-center gap-1.5 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded sm:rounded-md bg-amber-500 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-2xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                   {product.stock} Left
                 </span>
               ) : (
-                <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded sm:rounded-md bg-emerald-500/20 backdrop-blur-md text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-[9px] sm:text-[10px] font-semibold">
+                <span className="px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded sm:rounded-md bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-[9px] sm:text-[10px] font-semibold shadow-2xs">
                   In Stock
                 </span>
               )}
