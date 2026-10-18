@@ -6,7 +6,7 @@ import { Header } from "@/components/layout/header";
 import { ProductCard } from "@/components/domain/product-card";
 import { ScrollToTopSentinel } from "@/components/ui/scroll-to-top";
 import { useProductRealtime } from "@/hooks/use-product-realtime";
-import { Sparkles, Layers, SlidersHorizontal, PackageSearch } from "lucide-react";
+import { Sparkles, Layers, SlidersHorizontal, PackageSearch, ArrowDown } from "lucide-react";
 import { TiltedGridHero } from "@/components/ui/tilted-grid-hero";
 
 const SHOWCASE_HERO_FALLBACK_IMAGES = [
@@ -145,28 +145,59 @@ export default function StorefrontPage() {
           </TiltedGridHero>
         </section>
 
-        {/* Optical Hero Banner */}
+        {/* Editorial Spotlight Hero Banner (Direction C) */}
         <section className="relative rounded-2xl sm:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-linear-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950 p-5 sm:p-8 lg:p-10 mb-6 sm:mb-10 shadow-xs overflow-hidden">
           <div className="relative z-10 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 text-[11px] sm:text-xs font-medium mb-3 sm:mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>Engineered For Precision & Durability</span>
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 text-[10px] sm:text-xs font-mono font-medium mb-3 sm:mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>SERIES 2026 &bull; DROP 01</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.2]">
-              Precision Equipment. Zero-Compromise Engineering.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.15]">
+              The Desk Setup.
             </h1>
-            <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Carefully curated workspace essentials, tactile mechanical interfaces, and studio audio equipment crafted with uncompromising quality and attention to detail.
+            <p className="mt-2 sm:mt-2.5 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-mono">
+              Arcfield Systems // Curated Workspace Gear & Acoustic Tools
             </p>
+
+            {/* Direct Shopper Action & Live Inventory Guarantee */}
+            <div className="mt-4 sm:mt-6 flex flex-wrap items-center gap-3 sm:gap-4">
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById("catalog-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2 sm:px-4.5 sm:py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs sm:text-sm font-semibold shadow-xs hover:bg-zinc-800 dark:hover:bg-white btn-tactile cursor-pointer"
+              >
+                <span>Browse {products.length > 0 ? products.length : 10} Curated Pieces</span>
+                <ArrowDown className="w-3.5 h-3.5" />
+              </button>
+
+              <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 dark:text-zinc-400">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span>Ready to Ship</span>
+                <span className="opacity-40">&bull;</span>
+                <span>2-Year Direct Warranty</span>
+              </div>
+            </div>
           </div>
 
-          {/* Diffused Optical Corner Framing strictly bounded to card */}
-          <div className="absolute right-0 bottom-0 w-64 h-64 rounded-full bg-emerald-500/10 dark:bg-emerald-400/5 blur-3xl pointer-events-none" />
-          <div className="absolute right-8 top-0 w-48 h-48 rounded-full bg-indigo-500/10 dark:bg-indigo-400/5 blur-2xl pointer-events-none" />
+          {/* Multi-Tier Concentric Radial Ambient Glow (Dimming Outward) */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute right-0 top-0 bottom-0 w-3/4 sm:w-1/2 overflow-hidden rounded-r-2xl sm:rounded-r-3xl select-none"
+          >
+            {/* Layer 3: Outer Ambient Veil (Dimmest, widest spread ~1.5% - 2%) */}
+            <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[460px] sm:h-[460px] rounded-full bg-radial from-emerald-500/4 via-indigo-500/2 to-transparent blur-3xl" />
+            {/* Layer 2: Mid Diffuse Halo (Intermediate spread ~4% - 5%) */}
+            <div className="absolute -right-8 top-1/2 -translate-y-1/2 w-64 h-64 sm:w-80 sm:h-80 rounded-full bg-radial from-indigo-500/8 via-emerald-500/4 to-transparent blur-2xl" />
+            {/* Layer 1: Inner Focal Core (Nucleus, ~8% - 10% emerald/indigo blend) */}
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 w-36 h-36 sm:w-48 sm:h-48 rounded-full bg-radial from-emerald-500/12 via-indigo-500/6 to-transparent blur-xl" />
+          </div>
         </section>
 
         {/* Category Filter Pills & Search Stats */}
-        <section className="mb-6 sm:mb-8">
+        <section id="catalog-section" className="mb-6 sm:mb-8 scroll-mt-20">
           <div className="flex items-center justify-between gap-4 mb-3 sm:mb-4">
             <div className="flex items-center gap-2">
               <Layers className="w-4 h-4 text-zinc-400" />
@@ -269,7 +300,7 @@ export default function StorefrontPage() {
       <footer className="mt-16 border-t border-zinc-200/80 dark:border-zinc-800/80 py-8 pb-24 md:pb-8 bg-white dark:bg-zinc-900/60 text-xs text-zinc-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">ARCFIELD</span>
+            <span className="font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">ARCFIELD SYSTEMS</span>
             <span>&bull;</span>
             <span>Precision Workspace Gear & Craft</span>
           </div>
@@ -278,7 +309,7 @@ export default function StorefrontPage() {
             <span>&bull;</span>
             <span>2-Year Warranty</span>
             <span>&bull;</span>
-            <span>&copy; 2026 Arcfield Inc.</span>
+            <span>&copy; 2026 Arcfield Systems.</span>
           </div>
         </div>
       </footer>
