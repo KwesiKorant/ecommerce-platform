@@ -425,6 +425,110 @@ async function runTestSuite() {
   }
 
   // -------------------------------------------------------------
+  // AC-9: Administrative Order Fulfillment & Audit Log Verification
+  // -------------------------------------------------------------
+  console.log("\n[TEST 9] AC-9: Administrative Order Fulfillment & Audit Log Verification");
+  try {
+    // 1. Admin queries all customer orders
+    const allOrdersRes = await fetch(`${BASE_URL}/api/v1/orders?all=true`, {
+      headers: {
+        Cookie: adminCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+    });
+    const allOrdersJson = await allOrdersRes.json();
+    assert(allOrdersRes.status === 200, "Admin querying all orders returns HTTP 200");
+    assert(Array.isArray(allOrdersJson.data.orders), "Returns array of customer orders");
+    const foundCreatedOrder = allOrdersJson.data.orders.find((o) => o.id === createdOrderId);
+    assert(foundCreatedOrder !== undefined, "Admin order listing includes created customer order");
+    assert(Boolean(foundCreatedOrder.user?.email), "Admin order listing includes customer user metadata");
+
+    // 2. Non-admin customer attempting to access audit logs is rejected (403)
+    const unauthorizedAuditRes = await fetch(`${BASE_URL}/api/v1/admin/audit-logs`, {
+      headers: {
+        Cookie: customerCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+    });
+    assert(
+      unauthorizedAuditRes.status === 403,
+      "Non-admin customer querying audit logs receives HTTP 403 FORBIDDEN"
+    );
+
+    // 3. Non-admin customer attempting to modify order status via PATCH is rejected (403)
+    const unauthorizedPatchRes = await fetch(`${BASE_URL}/api/v1/orders/${createdOrderId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: customerCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+      body: JSON.stringify({ status: "SHIPPED" }),
+    });
+    assert(
+      unauthorizedPatchRes.status === 403,
+      "Non-admin customer calling PATCH /api/v1/orders/:id receives HTTP 403 FORBIDDEN"
+    );
+
+    // 4. Admin updates order status to SHIPPED
+    const shipOrderRes = await fetch(`${BASE_URL}/api/v1/orders/${createdOrderId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: adminCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+      body: JSON.stringify({ status: "SHIPPED" }),
+    });
+    const shipOrderJson = await shipOrderRes.json();
+    assert(shipOrderRes.status === 200, "Admin status update to SHIPPED returns HTTP 200");
+    assert(shipOrderJson.data.order.status === "SHIPPED", "Order status successfully updated to SHIPPED");
+
+    // 5. Query Audit Logs to verify immutable transition log
+    const auditRes = await fetch(`${BASE_URL}/api/v1/admin/audit-logs?entityType=ORDER`, {
+      headers: {
+        Cookie: adminCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+    });
+    const auditJson = await auditRes.json();
+    assert(auditRes.status === 200, "Admin query audit logs returns HTTP 200");
+    const matchingLog = auditJson.data.logs.find(
+      (l) => l.entityId === createdOrderId && l.action === "STATUS_CHANGE"
+    );
+    assert(matchingLog !== undefined, "Audit record exists for ORDER status transition");
+    assert(matchingLog.details.newStatus === "SHIPPED", "Audit record details accurately capture newStatus = SHIPPED");
+
+    // 6. Admin cancels order -> triggers atomic inventory replenishment
+    const checkProductBeforeCancel = await fetch(`${BASE_URL}/api/v1/products/${testProductId}`, {
+      headers: { "X-Forwarded-For": randomIp() },
+    });
+    const stockBeforeCancel = (await checkProductBeforeCancel.json()).data.product.stock;
+
+    const cancelRes = await fetch(`${BASE_URL}/api/v1/orders/${createdOrderId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: adminCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+      body: JSON.stringify({ status: "CANCELLED" }),
+    });
+    assert(cancelRes.status === 200, "Admin status update to CANCELLED returns HTTP 200");
+
+    const checkProductAfterCancel = await fetch(`${BASE_URL}/api/v1/products/${testProductId}`, {
+      headers: { "X-Forwarded-For": randomIp() },
+    });
+    const stockAfterCancel = (await checkProductAfterCancel.json()).data.product.stock;
+    assert(
+      stockAfterCancel === stockBeforeCancel + 1,
+      `Order cancellation atomically restored inventory from ${stockBeforeCancel} to ${stockAfterCancel}`
+    );
+  } catch (err) {
+    console.error("AC-9 Error:", err.message);
+  }
+
+  // -------------------------------------------------------------
   // Summary
   // -------------------------------------------------------------
   console.log("\n========================================================");

@@ -108,17 +108,18 @@ export async function getAuthSession(req: Request): Promise<AuthUser | null> {
  * Route protection guard: requires valid session and optionally verifies RBAC role.
  * Throws UnauthorizedError (401) or ForbiddenError (403).
  */
-export async function requireAuth(req: Request, allowedRoles?: Role[]): Promise<AuthUser> {
+export async function requireAuth(req: Request, allowedRoles?: Role | Role[]): Promise<AuthUser> {
   const session = await getAuthSession(req);
 
   if (!session) {
     throw new UnauthorizedError("Authentication required. Please sign in.");
   }
 
-  if (allowedRoles && allowedRoles.length > 0) {
-    if (!allowedRoles.includes(session.role)) {
+  if (allowedRoles) {
+    const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
+    if (roles.length > 0 && !roles.includes(session.role)) {
       throw new ForbiddenError(
-        `Action forbidden. Requires ${allowedRoles.join(" or ")} privilege.`
+        `Action forbidden. Requires ${roles.join(" or ")} privilege.`
       );
     }
   }

@@ -192,11 +192,15 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const viewAll = searchParams.get("all") === "true";
+    const statusParam = searchParams.get("status");
 
     // Anti-IDOR: Non-admin users are strictly clamped to their own userId
     const where: Prisma.OrderWhereInput = {};
     if (session.role === Role.ADMIN && viewAll) {
       // Admin viewing all orders
+      if (statusParam && Object.values(OrderStatus).includes(statusParam as OrderStatus)) {
+        where.status = statusParam as OrderStatus;
+      }
     } else {
       where.userId = session.userId;
     }
@@ -205,6 +209,13 @@ export async function GET(req: NextRequest) {
       where,
       orderBy: { createdAt: "desc" },
       include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            fullName: true,
+          },
+        },
         items: {
           include: {
             product: {
@@ -224,6 +235,7 @@ export async function GET(req: NextRequest) {
       id: order.id,
       orderNumber: order.orderNumber,
       userId: order.userId,
+      user: order.user,
       totalAmount: Number(order.totalAmount),
       status: order.status,
       shippingAddress: JSON.parse(order.shippingAddress),
