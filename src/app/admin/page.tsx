@@ -241,11 +241,11 @@ export default function AdminPage() {
             <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 mb-2">
               <Link href="/" className="hover:text-zinc-600 dark:hover:text-zinc-200">Storefront</Link>
               <span>/</span>
-              <span className="text-zinc-800 dark:text-zinc-200">Administration Console</span>
+              <span className="text-zinc-800 dark:text-zinc-200">Admin Dashboard</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight flex items-center gap-2.5">
               <Shield className="w-7 h-7 text-amber-500" />
-              <span>Catalog & Inventory Operations</span>
+              <span>Catalog & Inventory Management</span>
             </h1>
           </div>
 
@@ -281,7 +281,7 @@ export default function AdminPage() {
 
           <div className="p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 shadow-xs">
             <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
-              <span>Total Units in Reserve</span>
+              <span>Total Units in Stock</span>
               <TrendingUp className="w-4 h-4" />
             </div>
             <div className="text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400">
@@ -291,7 +291,7 @@ export default function AdminPage() {
 
           <div className="p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 shadow-xs">
             <div className="flex items-center justify-between text-zinc-400 text-xs mb-1">
-              <span>Low Reserve Alert</span>
+              <span>Low Stock Items</span>
               <AlertTriangle className="w-4 h-4 text-amber-500" />
             </div>
             <div className="text-2xl font-bold font-mono text-amber-600 dark:text-amber-400">
@@ -314,10 +314,10 @@ export default function AdminPage() {
         <section className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 shadow-xs overflow-hidden">
           <div className="p-4 sm:p-5 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              Live Catalog Inventory
+              Product Inventory
             </h2>
             <span className="text-xs font-mono text-zinc-400">
-              Auto-synced via Supabase CDC
+              Live Inventory Feed
             </span>
           </div>
 
@@ -331,7 +331,7 @@ export default function AdminPage() {
                     <th className="py-3 px-4">Product Details</th>
                     <th className="py-3 px-4">Category</th>
                     <th className="py-3 px-4">Price</th>
-                    <th className="py-3 px-4">Stock Reserve</th>
+                    <th className="py-3 px-4">Stock Units</th>
                     <th className="py-3 px-4">Status</th>
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
@@ -364,9 +364,9 @@ export default function AdminPage() {
 
                         <td className="py-3 px-4 font-mono font-medium">
                           {p.stock <= 0 ? (
-                            <span className="text-rose-500 font-bold">0 units (Depleted)</span>
+                            <span className="text-rose-500 font-bold">0 units (Out of Stock)</span>
                           ) : p.stock <= 3 ? (
-                            <span className="text-amber-500 font-bold">{p.stock} units (Low)</span>
+                            <span className="text-amber-500 font-bold">{p.stock} units (Low Stock)</span>
                           ) : (
                             <span className="text-zinc-800 dark:text-zinc-200">{p.stock} units</span>
                           )}
@@ -553,7 +553,7 @@ export default function AdminPage() {
               <div className="space-y-3 text-xs">
                 <div>
                   <label className="block text-zinc-500 font-medium mb-1">
-                    Price ($) — Keystroke Hardened
+                    Price ($)
                   </label>
                   <input
                     type="text"

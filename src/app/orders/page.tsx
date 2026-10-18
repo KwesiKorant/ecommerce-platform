@@ -101,14 +101,14 @@ export default function OrderHistoryPage() {
           <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 mb-2">
             <Link href="/" className="hover:text-zinc-600 dark:hover:text-zinc-200">Storefront</Link>
             <span>/</span>
-            <span className="text-zinc-800 dark:text-zinc-200">Customer Order Ledger</span>
+            <span className="text-zinc-800 dark:text-zinc-200">Order History</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-2.5">
             <Package className="w-7 h-7 text-zinc-700 dark:text-zinc-300" />
             <span>Order History & Receipts</span>
           </h1>
           <p className="mt-1 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-            All historical purchases are preserved with immutable price snapshots and anti-IDOR isolation.
+            View and manage your past orders, delivery tracking, and purchase receipts.
           </p>
         </div>
 

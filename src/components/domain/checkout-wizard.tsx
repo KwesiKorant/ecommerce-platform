@@ -198,7 +198,7 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
                 </div>
 
                 <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex justify-between items-center text-sm font-bold">
-                  <span>Authoritative Subtotal</span>
+                  <span>Subtotal</span>
                   <AnimatedCounter value={subtotal} prefix="$" decimals={2} />
                 </div>
 
@@ -323,22 +323,21 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
                   </div>
                 </div>
 
-                {/* Simulated Payment Method (Mock Payment Card) */}
+                {/* Payment Method */}
                 <div className="p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <CreditCard className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
                     <span className="font-medium text-zinc-800 dark:text-zinc-200">
-                      Institutional Direct Ledger Card (•••• 4242)
+                      Credit / Debit Card (•••• 4242)
                     </span>
                   </div>
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 </div>
 
-                <div className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-[11px] text-zinc-500 flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-zinc-700 dark:text-zinc-300 shrink-0" />
+                <div className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                   <span>
-                    Server-Authoritative Anti-Tampering Engine: All prices and stock availability are
-                    cryptographically verified on the database server.
+                    256-Bit SSL Encrypted Checkout. Your transaction is verified and processed securely.
                   </span>
                 </div>
 
@@ -369,7 +368,7 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
                     ) : (
                       <>
                         <PackageCheck className="w-4 h-4" />
-                        <span>Authorize & Place Order</span>
+                        <span>Place Order</span>
                       </>
                     )}
                   </button>
@@ -396,7 +395,7 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
                     Order Confirmed!
                   </h3>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-                    Thank you. Your order has been placed and inventory decremented atomically.
+                    Thank you for your purchase. We have received your order and are preparing it for shipment.
                   </p>
                 </div>
 
@@ -433,7 +432,7 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
                     href="/orders"
                     className="flex-1 py-2 px-3 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-semibold btn-tactile text-center"
                   >
-                    View Order Ledger
+                    View Order History
                   </a>
                 </div>
               </motion.div>

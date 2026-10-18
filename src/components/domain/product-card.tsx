@@ -112,9 +112,9 @@ export function ProductCard({ product, onSelect }: ProductCardProps) {
             <div className="flex items-center justify-between text-[11px] text-amber-600 dark:text-amber-400 font-medium mb-1">
               <span className="flex items-center gap-1">
                 <AlertCircle className="w-3 h-3" />
-                <span>Low inventory reserve</span>
+                <span>Low stock — order soon</span>
               </span>
-              <span className="font-mono">{product.stock} units</span>
+              <span className="font-mono">{product.stock} left</span>
             </div>
             <div className="w-full h-1 bg-amber-100 dark:bg-amber-950/60 rounded-full overflow-hidden">
               <div
@@ -128,7 +128,7 @@ export function ProductCard({ product, onSelect }: ProductCardProps) {
         {/* Price & Action Button Footer */}
         <div className="mt-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-400">Retail</span>
+            <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-400">Price</span>
             <div className="text-base font-bold text-zinc-900 dark:text-zinc-100">
               <AnimatedCounter value={product.price} prefix="$" decimals={2} />
             </div>

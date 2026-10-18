@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Arcfield Storefront — High-Performance Online Retail",
+  title: "Arcfield — Premium Workspace Gear & Studio Equipment",
   description:
-    "Next.js 16.4 e-commerce retail platform engineered with 120 FPS compositor kinematics, server-authoritative checkout, and Supabase Realtime CDC.",
+    "Engineered mechanical interfaces, ergonomics, studio audio equipment, and workspace accessories crafted with uncompromising quality.",
 };
 
 export default function RootLayout({

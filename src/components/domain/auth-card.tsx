@@ -131,12 +131,12 @@ export function AuthCard({ initialMode = "login", redirectNext = "/", onSuccess 
       {/* Header */}
       <div className="mb-6 text-center">
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
-          {mode === "login" ? "Welcome Back" : "Institutional Access"}
+          {mode === "login" ? "Welcome Back" : "Create Your Account"}
         </h2>
         <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
           {mode === "login"
             ? "Sign in to access your orders and checkout history"
-            : "Register for an authenticated customer account"}
+            : "Create an account to track orders and save your preferences"}
         </p>
       </div>
 

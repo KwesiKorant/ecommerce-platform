@@ -87,14 +87,13 @@ export default function StorefrontPage() {
           <div className="relative z-10 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 text-xs font-medium mb-4">
               <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>Arc-AA Certified Institutional Retail</span>
+              <span>Engineered For Precision & Durability</span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.15]">
               Precision Equipment. Zero-Compromise Engineering.
             </h1>
             <p className="mt-3 sm:mt-4 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Experience online retail powered by 120 FPS compositor kinematics, server-authoritative
-              checkout, and real-time inventory change data capture.
+              Carefully curated workspace essentials, tactile mechanical interfaces, and studio audio equipment crafted with uncompromising quality and attention to detail.
             </p>
           </div>
 
@@ -109,7 +108,7 @@ export default function StorefrontPage() {
             <div className="flex items-center gap-2">
               <Layers className="w-4 h-4 text-zinc-400" />
               <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                Catalog Divisions
+                Categories
               </h2>
             </div>
             {productsData?.pagination && (
@@ -213,18 +212,20 @@ export default function StorefrontPage() {
         onClose={() => setIsCheckoutOpen(false)}
       />
 
-      {/* Institutional Footer */}
+      {/* Footer */}
       <footer className="mt-16 border-t border-zinc-200/80 dark:border-zinc-800/80 py-8 bg-white dark:bg-zinc-900/60 text-xs text-zinc-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">ARCFIELD</span>
             <span>&bull;</span>
-            <span>E-Commerce Platform (Arc-AA Standard)</span>
+            <span>Precision Workspace Gear & Craft</span>
           </div>
-          <div className="flex items-center gap-4 font-mono text-[11px]">
-            <span>120 FPS Compositor Standard</span>
+          <div className="flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+            <span>Free Shipping Over $150</span>
             <span>&bull;</span>
-            <span>Supabase Realtime CDC</span>
+            <span>2-Year Warranty</span>
+            <span>&bull;</span>
+            <span>&copy; {new Date().getFullYear()} Arcfield Inc.</span>
           </div>
         </div>
       </footer>
