@@ -341,6 +341,29 @@ async function runTestSuite() {
     });
 
     assert(adminProductRes.status === 201, "Admin calling POST /api/v1/products receives HTTP 201 CREATED");
+
+    // Option B SoD: Admin calling POST /api/v1/orders receives HTTP 403 Forbidden
+    const adminOrderRes = await fetch(`${BASE_URL}/api/v1/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: adminCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+      body: JSON.stringify({
+        items: [{ productId: testProductId, quantity: 1 }],
+        shippingAddress: {
+          fullName: "Admin User",
+          addressLine1: "Admin HQ",
+          city: "Accra",
+          postalCode: "00233",
+          country: "Ghana",
+        },
+      }),
+    });
+    const adminOrderJson = await adminOrderRes.json();
+    assert(adminOrderRes.status === 403, "Admin attempting checkout receives HTTP 403 FORBIDDEN (Option B)");
+    assert(adminOrderJson.error === "ADMIN_CHECKOUT_PROHIBITED", "Returns ADMIN_CHECKOUT_PROHIBITED error code");
   } catch (err) {
     console.error("AC-7 Error:", err.message);
   }

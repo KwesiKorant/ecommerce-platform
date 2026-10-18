@@ -3,9 +3,10 @@
 import React from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Trash2, Plus, Minus, ArrowRight, ShoppingBag } from "lucide-react";
+import { X, Trash2, Plus, Minus, ArrowRight, ShoppingBag, ShieldAlert } from "lucide-react";
 import { useCartStore } from "@/store/use-cart-store";
 import { useMobileSheetDrag } from "@/hooks/use-mobile-sheet-drag";
+import { useAuthSession } from "@/hooks/use-auth-session";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { HoldToConfirmButton } from "@/components/ui/hold-to-confirm-button";
 
@@ -20,6 +21,7 @@ export function CartSheet({ onStartCheckout }: CartSheetProps) {
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
   const clearCart = useCartStore((state) => state.clearCart);
+  const { isAdmin } = useAuthSession();
 
   const subtotal = items.reduce((acc, i) => acc + i.price * i.quantity, 0);
   const totalItemCount = items.reduce((acc, i) => acc + i.quantity, 0);
@@ -199,7 +201,7 @@ export function CartSheet({ onStartCheckout }: CartSheetProps) {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    {/* Emil Kowalski Tactile Hold-To-Confirm Clear Cart */}
+                    {/* Tactile Hold-To-Confirm Clear Cart */}
                     <HoldToConfirmButton
                       onConfirm={clearCart}
                       label="Clear"
@@ -210,18 +212,25 @@ export function CartSheet({ onStartCheckout }: CartSheetProps) {
                       className="shrink-0"
                     />
 
-                    {/* Proceed to Checkout Trigger */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        closeCart();
-                        onStartCheckout();
-                      }}
-                      className="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-semibold btn-tactile shadow-sm cursor-pointer"
-                    >
-                      <span>Proceed to Checkout</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    {/* Proceed to Checkout Trigger or Admin Restriction */}
+                    {isAdmin ? (
+                      <div className="flex-1 p-2 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-300 text-[11px] leading-tight flex items-center gap-2">
+                        <ShieldAlert className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                        <span>Admin account active. Use a customer account to checkout.</span>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          closeCart();
+                          onStartCheckout();
+                        }}
+                        className="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-semibold btn-tactile shadow-sm cursor-pointer"
+                      >
+                        <span>Proceed to Checkout</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
                 </div>
               )}

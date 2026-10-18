@@ -28,8 +28,21 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Gate 2: Authentication check (Customer or Admin)
+    // Gate 2: Authentication check
     const session = await requireAuth(req);
+
+    // Gate 2b: Administrative Separation of Duties (SoD) enforcement
+    if (session.role === Role.ADMIN) {
+      return jsonResponse(
+        {
+          success: false,
+          error: "ADMIN_CHECKOUT_PROHIBITED",
+          message:
+            "Administrative accounts are restricted from placing customer orders. Please sign in with a Customer account to complete purchases.",
+        },
+        { status: 403, rateLimit }
+      );
+    }
 
     // Gate 3: Strict Zod boundary parsing - strips any client-submitted prices
     const body = await req.json();

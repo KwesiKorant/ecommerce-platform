@@ -12,8 +12,10 @@ import {
   MapPin,
   PackageCheck,
   AlertTriangle,
+  ShieldAlert,
 } from "lucide-react";
 import { useCartStore } from "@/store/use-cart-store";
+import { useAuthSession } from "@/hooks/use-auth-session";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 
 export interface CheckoutWizardProps {
@@ -27,6 +29,7 @@ type WizardStep = 1 | 2 | 3 | 4;
 export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWizardProps) {
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
+  const { isAdmin } = useAuthSession();
   const subtotal = items.reduce((acc, i) => acc + i.price * i.quantity, 0);
 
   const [step, setStep] = useState<WizardStep>(1);
@@ -62,6 +65,13 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
   };
 
   const handlePlaceOrder = async () => {
+    if (isAdmin) {
+      setErrorMessage("Administrative accounts are restricted from placing customer orders. Please sign in with a Customer account.");
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 300);
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage("");
 
@@ -334,12 +344,21 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 </div>
 
-                <div className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>
-                    256-Bit SSL Encrypted Checkout. Your transaction is verified and processed securely.
-                  </span>
-                </div>
+                {isAdmin ? (
+                  <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-300 text-xs flex items-center gap-2">
+                    <ShieldAlert className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                    <span>
+                      Administrative accounts cannot place purchase orders. Please sign in with a Customer account.
+                    </span>
+                  </div>
+                ) : (
+                  <div className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <span>
+                      256-Bit SSL Encrypted Checkout. Your transaction is verified and processed securely.
+                    </span>
+                  </div>
+                )}
 
                 <div className="pt-2 flex justify-between items-center text-sm font-bold">
                   <span>Grand Total</span>
@@ -359,9 +378,10 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
 
                   <button
                     type="button"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isAdmin}
                     onClick={handlePlaceOrder}
-                    className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold btn-tactile shadow-md cursor-pointer disabled:opacity-50"
+                    title={isAdmin ? "Admin accounts cannot checkout" : "Place your order"}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold btn-tactile shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <span>Placing Order...</span>
