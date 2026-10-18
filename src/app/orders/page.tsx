@@ -65,7 +65,7 @@ const FILTER_TABS = [
 export default function OrderHistoryPage() {
   const queryClient = useQueryClient();
   const [cancelFeedback, setCancelFeedback] = useState<string | null>(null);
-  const [statusFilter, setStatusFilter] = useState<string>("ALL");
+  const [statusFilter, setStatusFilter] = useState<string>("PROCESSING");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const { data, isLoading, error } = useQuery<{ orders: Order[] }>({

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -18,6 +18,7 @@ import {
   X,
   AlertCircle,
   Building,
+  LogOut,
 } from "lucide-react";
 
 export interface Address {
@@ -49,6 +50,26 @@ export function AccountView({ initialUser }: AccountViewProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isLogoutModalOpen) {
+        setIsLogoutModalOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isLogoutModalOpen]);
+
+  const handleLogout = async () => {
+    await fetch("/api/v1/auth/logout", { method: "POST" });
+    queryClient.setQueryData(["auth-user"], null);
+    queryClient.setQueryData(["auth_me"], { user: null });
+    queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+    queryClient.invalidateQueries({ queryKey: ["auth_me"] });
+    window.location.href = "/";
+  };
 
   // Form State
   const [formData, setFormData] = useState({
@@ -73,13 +94,15 @@ export function AccountView({ initialUser }: AccountViewProps) {
   });
 
   // Query customer orders for telemetry count
-  const { data: orders = [] } = useQuery({
+  const { data: orders = [] } = useQuery<unknown[]>({
     queryKey: ["customer-orders"],
     queryFn: async () => {
       const res = await fetch("/api/v1/orders");
       if (!res.ok) return [];
       const json = await res.json();
-      return json.data || [];
+      if (Array.isArray(json.data)) return json.data;
+      if (json.data && Array.isArray(json.data.orders)) return json.data.orders;
+      return [];
     },
     enabled: !!user,
   });
@@ -257,7 +280,7 @@ export function AccountView({ initialUser }: AccountViewProps) {
                       .slice(0, 2)
                       .join("")
                       .toUpperCase()
-                  : "AF"}
+                  : "AS"}
               </div>
               <div>
                 <div className="flex items-center gap-2.5">
@@ -273,17 +296,17 @@ export function AccountView({ initialUser }: AccountViewProps) {
               </div>
             </div>
 
-            {/* Quick Metrics */}
-            <div className="flex items-center gap-3 sm:gap-6 pt-4 sm:pt-0 border-t sm:border-t-0 border-zinc-100 dark:border-zinc-800/80 w-full sm:w-auto">
-              <div className="flex-1 sm:flex-none bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-4 py-2.5 border border-zinc-200/60 dark:border-zinc-800 text-center">
+            {/* Quick Metrics & Actions */}
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 pt-4 sm:pt-0 border-t sm:border-t-0 border-zinc-100 dark:border-zinc-800/80 w-full sm:w-auto">
+              <div className="flex-1 sm:flex-none bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-4 py-2.5 border border-zinc-200/60 dark:border-zinc-800 text-center min-w-[90px]">
                 <span className="block text-xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
-                  {orders.length}
+                  {Array.isArray(orders) ? orders.length : 0}
                 </span>
                 <span className="text-[11px] text-zinc-500 uppercase tracking-wider font-medium">
                   Total Orders
                 </span>
               </div>
-              <div className="flex-1 sm:flex-none bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-4 py-2.5 border border-zinc-200/60 dark:border-zinc-800 text-center">
+              <div className="flex-1 sm:flex-none bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-4 py-2.5 border border-zinc-200/60 dark:border-zinc-800 text-center min-w-[90px]">
                 <span className="block text-xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
                   {addresses.length}
                 </span>
@@ -291,6 +314,15 @@ export function AccountView({ initialUser }: AccountViewProps) {
                   Addresses
                 </span>
               </div>
+              <button
+                type="button"
+                onClick={() => setIsLogoutModalOpen(true)}
+                title="Sign out of your account"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-rose-200/80 dark:border-rose-900/40 bg-rose-50/60 dark:bg-rose-950/20 hover:bg-rose-100/80 dark:hover:bg-rose-950/50 text-rose-600 dark:text-rose-400 font-semibold text-xs transition-colors btn-tactile cursor-pointer shadow-2xs self-stretch sm:self-auto"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Sign Out</span>
+              </button>
             </div>
           </div>
         </div>
@@ -613,6 +645,66 @@ export function AccountView({ initialUser }: AccountViewProps) {
                   </button>
                 </div>
               </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Sign Out Confirmation Modal */}
+      <AnimatePresence>
+        {isLogoutModalOpen && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="logout-dialog-title"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
+            onClick={() => setIsLogoutModalOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 8 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-sm rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 shadow-2xl relative"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
+                  <LogOut className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 id="logout-dialog-title" className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                    Sign Out
+                  </h3>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    Arcfield Systems Authentication
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed mb-6">
+                Are you sure you want to sign out? Your shopping cart items will remain securely saved on this device.
+              </p>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsLogoutModalOpen(false)}
+                  className="flex-1 px-4 py-2 text-xs font-semibold rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors btn-tactile cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setIsLogoutModalOpen(false);
+                    await handleLogout();
+                  }}
+                  className="flex-1 px-4 py-2 text-xs font-semibold rounded-xl bg-rose-600 hover:bg-rose-700 text-white transition-colors btn-tactile cursor-pointer shadow-sm"
+                >
+                  Sign Out
+                </button>
+              </div>
             </motion.div>
           </div>
         )}
