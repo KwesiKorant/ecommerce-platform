@@ -186,41 +186,46 @@ export default function StorefrontPage() {
             </div>
           </div>
 
-          {/* Stepped Concentric Radial Wavefront (Anchored at Bottom-Right Corner) */}
+          {/* Stepped Concentric Radial Wavefront (Feathered Corner Emanation, Zero Hard Cuts) */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute bottom-0 right-0 w-full sm:w-2/3 h-full overflow-hidden rounded-br-2xl sm:rounded-br-3xl select-none"
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl select-none opacity-85"
+            style={{
+              contain: "layout style paint",
+              maskImage: "radial-gradient(circle at bottom right, black 25%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.3) 72%, transparent 88%)",
+              WebkitMaskImage: "radial-gradient(circle at bottom right, black 25%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.3) 72%, transparent 88%)",
+            }}
           >
-            {/* Baseline radial gradient fanning from bottom-right angle */}
-            <div className="absolute inset-0 bg-radial-[at_100%_100%] from-emerald-500/12 via-indigo-500/6 to-transparent" />
+            {/* Baseline radial tone fanning from bottom-right angle */}
+            <div className="absolute inset-0 bg-radial-[at_100%_100%] from-emerald-500/10 via-indigo-500/5 to-transparent" />
 
-            {/* Concentric Tier 5: Outer Ambient Arc (dimmest ~5% emerald) */}
+            {/* Concentric Tier 5: Outer Ambient Arc (~15-20% reduced visibility) */}
             <div
-              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[620px] sm:w-[900px] h-[620px] sm:h-[900px] rounded-full border border-emerald-500/15 dark:border-emerald-400/12 bg-radial from-emerald-500/6 via-transparent to-transparent pointer-events-none"
+              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[620px] sm:w-[860px] h-[620px] sm:h-[860px] rounded-full border border-emerald-500/10 dark:border-emerald-400/8 bg-radial from-emerald-500/4 via-transparent to-transparent pointer-events-none"
               style={{ contain: "layout style paint" }}
             />
 
-            {/* Concentric Tier 4: Diffuse Outer Ring (~8% indigo) */}
+            {/* Concentric Tier 4: Diffuse Outer Ring */}
             <div
-              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[460px] sm:w-[660px] h-[460px] sm:h-[660px] rounded-full border border-indigo-500/20 dark:border-indigo-400/16 bg-radial from-indigo-500/10 via-indigo-500/3 to-transparent pointer-events-none"
+              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[460px] sm:w-[640px] h-[460px] sm:h-[640px] rounded-full border border-indigo-500/15 dark:border-indigo-400/12 bg-radial from-indigo-500/7 via-indigo-500/2 to-transparent pointer-events-none"
               style={{ contain: "layout style paint" }}
             />
 
-            {/* Concentric Tier 3: Mid Wave Ring (~12% emerald) */}
+            {/* Concentric Tier 3: Mid Wave Ring */}
             <div
-              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[320px] sm:w-[460px] h-[320px] sm:h-[460px] rounded-full border border-emerald-500/25 dark:border-emerald-400/20 bg-radial from-emerald-500/14 via-emerald-500/5 to-transparent pointer-events-none"
+              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[320px] sm:w-[440px] h-[320px] sm:h-[440px] rounded-full border border-emerald-500/20 dark:border-emerald-400/16 bg-radial from-emerald-500/10 via-emerald-500/3 to-transparent pointer-events-none"
               style={{ contain: "layout style paint" }}
             />
 
-            {/* Concentric Tier 2: Inner Halo Ring (~16% indigo) */}
+            {/* Concentric Tier 2: Inner Halo Ring */}
             <div
-              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[200px] sm:w-[290px] h-[200px] sm:h-[290px] rounded-full border border-indigo-500/30 dark:border-indigo-400/25 bg-radial from-indigo-500/18 via-indigo-500/8 to-transparent pointer-events-none"
+              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[200px] sm:w-[280px] h-[200px] sm:h-[280px] rounded-full border border-indigo-500/24 dark:border-indigo-400/20 bg-radial from-indigo-500/14 via-indigo-500/6 to-transparent pointer-events-none"
               style={{ contain: "layout style paint" }}
             />
 
-            {/* Concentric Tier 1: Core Nucleus at Bottom-Right Corner (~24% emerald/indigo) */}
+            {/* Concentric Tier 1: Core Nucleus at Bottom-Right Corner */}
             <div
-              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[100px] sm:w-[140px] h-[100px] sm:h-[140px] rounded-full border border-emerald-500/40 dark:border-emerald-400/35 bg-radial from-emerald-500/26 via-indigo-500/16 to-transparent pointer-events-none"
+              className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[100px] sm:w-[130px] h-[100px] sm:h-[130px] rounded-full border border-emerald-500/30 dark:border-emerald-400/25 bg-radial from-emerald-500/20 via-indigo-500/12 to-transparent pointer-events-none"
               style={{ contain: "layout style paint" }}
             />
           </div>
