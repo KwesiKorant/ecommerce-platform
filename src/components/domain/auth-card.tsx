@@ -131,9 +131,7 @@ export function AuthCard({ initialMode = "login", redirectNext = "/", onSuccess 
 
       {/* Header */}
       <div className="mb-6 text-center flex flex-col items-center">
-        <div className="w-10 h-10 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center p-2 mb-3 shadow-sm">
-          <BrandLogo className="w-full h-full text-white dark:text-zinc-900" />
-        </div>
+        <BrandLogo className="h-9 w-auto text-zinc-900 dark:text-zinc-100 mb-3" />
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
           {mode === "login" ? "Welcome Back" : "Create Your Account"}
         </h2>
