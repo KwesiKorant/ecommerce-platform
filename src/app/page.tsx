@@ -130,11 +130,11 @@ export default function StorefrontPage() {
             speed={4.5}
             tileHeight={76}
             aspectRatio={16 / 9}
-            curve={70}
-            fade={16}
+            curve={50}
+            fade={20}
             gap={6}
             axis={50}
-            className="h-[140px] sm:h-[180px] md:h-[220px] lg:h-[260px] w-full rounded-2xl sm:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/40 backdrop-blur-sm shadow-xs"
+            className="h-[140px] sm:h-[180px] md:h-[220px] lg:h-[260px] w-full rounded-2xl sm:rounded-3xl"
           >
             <div className="absolute top-2.5 left-3 sm:top-3.5 sm:left-4 z-10 pointer-events-none">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md text-[10px] sm:text-xs font-mono font-medium text-zinc-600 dark:text-zinc-400 border border-zinc-200/60 dark:border-zinc-800/60 shadow-2xs">
