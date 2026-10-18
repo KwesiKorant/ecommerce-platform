@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "motion/react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Header } from "@/components/layout/header";
 import { HoldToConfirmButton } from "@/components/ui/hold-to-confirm-button";
@@ -18,6 +19,9 @@ import {
   ShoppingBag,
   MapPin,
   AlertCircle,
+  Search,
+  X,
+  SlidersHorizontal,
 } from "lucide-react";
 
 interface OrderItem {
@@ -50,9 +54,19 @@ interface Order {
   createdAt: string;
 }
 
+const FILTER_TABS = [
+  { id: "ALL", label: "All Orders", icon: Package },
+  { id: "PROCESSING", label: "Processing", icon: Clock },
+  { id: "SHIPPED", label: "Shipped", icon: Truck },
+  { id: "DELIVERED", label: "Delivered", icon: CheckCircle2 },
+  { id: "CANCELLED", label: "Cancelled", icon: XCircle },
+] as const;
+
 export default function OrderHistoryPage() {
   const queryClient = useQueryClient();
   const [cancelFeedback, setCancelFeedback] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<string>("ALL");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const { data, isLoading, error } = useQuery<{ orders: Order[] }>({
     queryKey: ["orders"],
@@ -67,6 +81,7 @@ export default function OrderHistoryPage() {
       const json = await res.json();
       return json.data;
     },
+    staleTime: 30 * 1000,
   });
 
   const cancelMutation = useMutation({
@@ -91,25 +106,75 @@ export default function OrderHistoryPage() {
 
   const orders = data?.orders || [];
 
+  // Instantaneous in-memory status count calculations
+  const statusCounts = useMemo(() => {
+    const counts: Record<string, number> = {
+      ALL: orders.length,
+      PROCESSING: 0,
+      SHIPPED: 0,
+      DELIVERED: 0,
+      CANCELLED: 0,
+    };
+    orders.forEach((o) => {
+      if (counts[o.status] !== undefined) {
+        counts[o.status]++;
+      }
+    });
+    return counts;
+  }, [orders]);
+
+  // Zero-latency filtered orders derivation
+  const filteredOrders = useMemo(() => {
+    return orders.filter((order) => {
+      if (statusFilter !== "ALL" && order.status !== statusFilter) {
+        return false;
+      }
+      if (searchQuery.trim()) {
+        const q = searchQuery.trim().toLowerCase();
+        const matchesNumber = order.orderNumber.toLowerCase().includes(q);
+        const matchesProduct = order.items.some((i) =>
+          (i.product?.title || "").toLowerCase().includes(q)
+        );
+        const matchesCity = (order.shippingAddress?.city || "").toLowerCase().includes(q);
+        const matchesName = (order.shippingAddress?.fullName || "").toLowerCase().includes(q);
+        if (!matchesNumber && !matchesProduct && !matchesCity && !matchesName) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }, [orders, statusFilter, searchQuery]);
+
   return (
     <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
       <Header />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Page Title & Breadcrumbs */}
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 mb-2">
             <Link href="/" className="hover:text-zinc-600 dark:hover:text-zinc-200">Storefront</Link>
             <span>/</span>
             <span className="text-zinc-800 dark:text-zinc-200">Order History</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-2.5">
-            <Package className="w-7 h-7 text-zinc-700 dark:text-zinc-300" />
-            <span>Order History & Receipts</span>
-          </h1>
-          <p className="mt-1 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-            View and manage your past orders, delivery tracking, and purchase receipts.
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-2.5">
+                <Package className="w-7 h-7 text-zinc-700 dark:text-zinc-300" />
+                <span>Order History & Receipts</span>
+              </h1>
+              <p className="mt-1 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+                Track order shipments, inspect past receipts, and manage active fulfillment.
+              </p>
+            </div>
+
+            {orders.length > 0 && (
+              <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 bg-white dark:bg-zinc-900 px-3 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-2xs self-start sm:self-auto">
+                <span className="text-zinc-400">Total Lifetime:</span>
+                <span className="font-bold text-zinc-900 dark:text-zinc-100">{orders.length} orders</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Feedback Alert */}
@@ -117,6 +182,75 @@ export default function OrderHistoryPage() {
           <div className="mb-6 p-4 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-medium flex items-center gap-2 shadow-md">
             <AlertCircle className="w-4 h-4 text-emerald-400 dark:text-emerald-600 shrink-0" />
             <span>{cancelFeedback}</span>
+          </div>
+        )}
+
+        {/* Standard Segmented Filter Tabs & Quick Search Bar */}
+        {!isLoading && !error && orders.length > 0 && (
+          <div className="mb-6 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-2 sm:p-2.5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 shadow-xs">
+              {/* Segmented Filter Control */}
+              <div className="flex items-center gap-1 overflow-x-auto p-1 scrollbar-none">
+                {FILTER_TABS.map((tab) => {
+                  const isActive = statusFilter === tab.id;
+                  const Icon = tab.icon;
+                  const count = statusCounts[tab.id] ?? 0;
+
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setStatusFilter(tab.id)}
+                      className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors btn-tactile cursor-pointer select-none ${
+                        isActive
+                          ? "text-zinc-900 dark:text-zinc-100"
+                          : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                      }`}
+                    >
+                      {isActive && (
+                        <motion.div
+                          layoutId="customer-order-tab-pill"
+                          transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                          className="absolute inset-0 rounded-xl bg-zinc-100 dark:bg-zinc-800 shadow-2xs -z-10"
+                        />
+                      )}
+                      <Icon className="w-3.5 h-3.5 shrink-0 opacity-70" />
+                      <span>{tab.label}</span>
+                      <span
+                        className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
+                          isActive
+                            ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 font-bold"
+                            : "bg-zinc-100 dark:bg-zinc-800/80 text-zinc-500"
+                        }`}
+                      >
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Order Search Dock */}
+              <div className="relative sm:w-64 px-1">
+                <Search className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search order # or item..."
+                  className="w-full pl-8 pr-7 py-1.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50 text-xs focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
@@ -163,9 +297,40 @@ export default function OrderHistoryPage() {
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
+        ) : filteredOrders.length === 0 ? (
+          // Contextual Empty State when filtered results are zero
+          <div className="p-10 rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 text-center bg-white/40 dark:bg-zinc-900/20">
+            <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-400 flex items-center justify-center mx-auto mb-3">
+              <SlidersHorizontal className="w-5 h-5 stroke-1" />
+            </div>
+            <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+              No Orders Found in This View
+            </h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 max-w-md mx-auto mb-4">
+              {searchQuery
+                ? `No orders match the keyword "${searchQuery}" with filter "${statusFilter}".`
+                : statusFilter === "PROCESSING"
+                ? "No active orders in preparation. All your orders have dispatched or completed."
+                : statusFilter === "SHIPPED"
+                ? "No packages currently in transit."
+                : statusFilter === "DELIVERED"
+                ? "No orders marked as delivered yet."
+                : "No orders match the current status filter."}
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setStatusFilter("ALL");
+                setSearchQuery("");
+              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 btn-tactile cursor-pointer"
+            >
+              <span>Reset Order Filters</span>
+            </button>
+          </div>
         ) : (
           <div className="space-y-6">
-            {orders.map((order) => {
+            {filteredOrders.map((order) => {
               const formattedDate = new Date(order.createdAt).toLocaleDateString(undefined, {
                 year: "numeric",
                 month: "short",

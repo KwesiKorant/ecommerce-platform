@@ -198,11 +198,12 @@ export async function GET(req: NextRequest) {
     const where: Prisma.OrderWhereInput = {};
     if (session.role === Role.ADMIN && viewAll) {
       // Admin viewing all orders
-      if (statusParam && Object.values(OrderStatus).includes(statusParam as OrderStatus)) {
-        where.status = statusParam as OrderStatus;
-      }
     } else {
       where.userId = session.userId;
+    }
+
+    if (statusParam && Object.values(OrderStatus).includes(statusParam as OrderStatus)) {
+      where.status = statusParam as OrderStatus;
     }
 
     const orders = await prisma.order.findMany({
