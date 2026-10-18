@@ -38,13 +38,31 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* Base Body Styles */
+/* Viewport & Layout Containment */
+html {
+  width: 100%;
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: clip;
   background-color: var(--background);
   color: var(--foreground);
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Browser-agnostic No-Scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Universal Button Tactility (Compositor Scale Only) */

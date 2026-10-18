@@ -36,7 +36,7 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
     <header className="sticky top-0 z-30 w-full border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 glass-panel transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand Logo */}
-        <div className="flex items-center gap-3 sm:gap-6">
+        <div className="flex items-center gap-3 lg:gap-6">
           <Link href="/" className="flex items-center gap-2 group btn-tactile shrink-0">
             <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center font-bold text-sm tracking-wider shadow-sm">
               AF
@@ -45,13 +45,13 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
               <span className="font-bold tracking-tight text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
                 ARCFIELD
               </span>
-              <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5 hidden xs:block">
+              <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5 hidden sm:block">
                 Precision Retail
               </span>
             </div>
           </Link>
 
-          {/* Navigation Links */}
+          {/* Navigation Links (Visible on Tablet & Desktop) */}
           <nav className="hidden md:flex items-center gap-1 text-xs font-medium text-zinc-600 dark:text-zinc-400">
             <Link
               href="/"
@@ -91,7 +91,7 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
         </div>
 
         {/* Right Section: Search, Theme Toggle, Auth, Cart Trigger */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {onSearchChange && (
             <ExpandingSearchDock
               value={searchQuery}
@@ -102,13 +102,13 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
 
           <ThemeToggle />
 
-          {/* Auth State */}
+          {/* Auth State: On tablet/desktop (md:), show full profile pill & destructive logout */}
           {user ? (
-            <div className="flex items-center gap-1.5 pl-1 border-l border-zinc-200 dark:border-zinc-800">
+            <div className="hidden md:flex items-center gap-1.5 pl-1.5 border-l border-zinc-200 dark:border-zinc-800">
               <Link
                 href="/account"
                 title="View Customer Profile & Saved Addresses"
-                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-xl border transition-all btn-tactile cursor-pointer ${
+                className={`flex items-center gap-2 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-xl border transition-all btn-tactile cursor-pointer ${
                   pathname === "/account"
                     ? "bg-zinc-100 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 shadow-xs"
                     : "border-transparent hover:border-zinc-200 dark:hover:border-zinc-800 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/70"
@@ -126,7 +126,7 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
                     : <UserIcon className="w-3.5 h-3.5" />}
                 </div>
 
-                <div className="hidden sm:flex flex-col text-left leading-tight pr-0.5">
+                <div className="flex flex-col text-left leading-tight pr-0.5">
                   <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 truncate max-w-[120px]">
                     {user.fullName}
                   </span>
@@ -147,7 +147,7 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
           ) : (
             <Link
               href="/login"
-              className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 btn-tactile transition-colors"
+              className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 btn-tactile transition-colors"
             >
               <UserIcon className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Sign In</span>
@@ -159,7 +159,7 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
             type="button"
             onClick={toggleCart}
             aria-label={`Shopping Cart with ${totalItemCount} items`}
-            className="relative flex items-center justify-center p-2.5 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-sm btn-tactile cursor-pointer"
+            className="relative flex items-center justify-center p-2.5 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-sm btn-tactile cursor-pointer shrink-0"
           >
             <ShoppingBag className="w-4 h-4" />
             {totalItemCount > 0 && (

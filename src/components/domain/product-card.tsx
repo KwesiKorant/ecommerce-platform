@@ -59,21 +59,21 @@ export function ProductCard({ product, onSelect }: ProductCardProps) {
   return (
     <article
       onClick={onSelect}
-      className="group relative flex flex-col justify-between rounded-xl sm:rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 p-2.5 sm:p-4 transition-colors duration-150 hover:border-zinc-400 dark:hover:border-zinc-600 product-card shadow-xs"
+      className="group relative flex flex-col justify-between h-full rounded-xl sm:rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 p-2.5 sm:p-4 transition-colors duration-150 hover:border-zinc-400 dark:hover:border-zinc-600 product-card shadow-xs"
     >
-      <div>
+      <div className="flex-1 flex flex-col">
         <Link
           href={`/products/${product.slug}`}
           prefetch={true}
-          className="block focus:outline-none"
+          className="block focus:outline-none flex-1"
         >
           {/* Product Image Thumbnail */}
-          <div className="relative aspect-4/3 w-full rounded-lg sm:rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800/60 mb-2 sm:mb-3.5">
+          <div className="relative aspect-4/3 w-full rounded-lg sm:rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800/60 mb-2 sm:mb-3">
             <Image
               src={product.imageUrl}
               alt={product.title}
               fill
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               loading="lazy"
             />
@@ -103,8 +103,8 @@ export function ProductCard({ product, onSelect }: ProductCardProps) {
             </div>
           </div>
 
-          {/* Title & Description */}
-          <div>
+          {/* Title & Description with uniform baseline */}
+          <div className="min-h-[42px] sm:min-h-[50px]">
             <h3 className="text-xs sm:text-sm font-semibold text-zinc-900 dark:text-zinc-100 line-clamp-1 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
               {product.title}
             </h3>
@@ -114,24 +114,36 @@ export function ProductCard({ product, onSelect }: ProductCardProps) {
           </div>
         </Link>
 
-        {/* Stock Scarcity Zero-Layout-Shift Progress Bar (scaleX) */}
-        {isLowStock && (
-          <div className="mt-2 sm:mt-3">
-            <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-amber-600 dark:text-amber-400 font-medium mb-1">
-              <span className="flex items-center gap-1 truncate mr-1">
-                <AlertCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />
-                <span className="truncate">Low stock</span>
-              </span>
-              <span className="font-mono shrink-0">{product.stock} left</span>
+        {/* Consistent Inventory Status Indicator Row */}
+        <div className="h-4 sm:h-5 mt-1 sm:mt-2 flex items-center">
+          {isOutOfStock ? (
+            <div className="text-[10px] text-zinc-400 dark:text-zinc-500 flex items-center gap-1 font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+              <span>Unavailable</span>
             </div>
-            <div className="w-full h-1 bg-amber-100 dark:bg-amber-950/60 rounded-full overflow-hidden">
-              <div
-                className="w-full h-full rounded-full bg-amber-500 origin-left transition-transform duration-500 ease-out"
-                style={{ transform: `scaleX(${stockPercentage / 100})` }}
-              />
+          ) : isLowStock ? (
+            <div className="w-full">
+              <div className="flex items-center justify-between text-[10px] text-amber-600 dark:text-amber-400 font-medium">
+                <span className="flex items-center gap-1 truncate">
+                  <AlertCircle className="w-2.5 h-2.5 shrink-0" />
+                  <span className="truncate">Low stock</span>
+                </span>
+                <span className="font-mono text-[9px] shrink-0">{product.stock} left</span>
+              </div>
+              <div className="w-full h-0.5 sm:h-1 bg-amber-100 dark:bg-amber-950/60 rounded-full overflow-hidden mt-0.5">
+                <div
+                  className="w-full h-full rounded-full bg-amber-500 origin-left transition-transform duration-500 ease-out"
+                  style={{ transform: `scaleX(${stockPercentage / 100})` }}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="text-[10px] text-zinc-400 dark:text-zinc-500 flex items-center gap-1 font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>In stock</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Price & Action Button Footer */}

@@ -78,25 +78,25 @@ export default function StorefrontPage() {
       <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
       {/* Main Catalog Viewport */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 pb-24 md:pb-12">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 pb-28 md:pb-12">
         {/* Optical Hero Banner */}
-        <section className="relative rounded-2xl sm:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-linear-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950 p-5 sm:p-10 mb-6 sm:mb-10 shadow-xs overflow-hidden">
+        <section className="relative rounded-2xl sm:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-linear-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950 p-5 sm:p-8 lg:p-10 mb-6 sm:mb-10 shadow-xs overflow-hidden">
           <div className="relative z-10 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 text-[11px] sm:text-xs font-medium mb-3 sm:mb-4">
               <Sparkles className="w-3.5 h-3.5 text-amber-500" />
               <span>Engineered For Precision & Durability</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.2]">
+            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.2]">
               Precision Equipment. Zero-Compromise Engineering.
             </h1>
-            <p className="mt-2.5 sm:mt-4 text-xs sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm lg:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Carefully curated workspace essentials, tactile mechanical interfaces, and studio audio equipment crafted with uncompromising quality and attention to detail.
             </p>
           </div>
 
-          {/* Diffused Optical Corner Framing */}
-          <div className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-emerald-500/10 dark:bg-emerald-400/5 blur-3xl pointer-events-none" />
-          <div className="absolute right-10 top-10 w-48 h-48 rounded-full bg-indigo-500/10 dark:bg-indigo-400/5 blur-2xl pointer-events-none" />
+          {/* Diffused Optical Corner Framing strictly bounded to card */}
+          <div className="absolute right-0 bottom-0 w-64 h-64 rounded-full bg-emerald-500/10 dark:bg-emerald-400/5 blur-3xl pointer-events-none" />
+          <div className="absolute right-8 top-0 w-48 h-48 rounded-full bg-indigo-500/10 dark:bg-indigo-400/5 blur-2xl pointer-events-none" />
         </section>
 
         {/* Category Filter Pills & Search Stats */}
@@ -115,11 +115,11 @@ export default function StorefrontPage() {
             )}
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 -mx-3 px-3 sm:mx-0 sm:px-0 no-scrollbar">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar w-full">
             <button
               type="button"
               onClick={() => setSelectedCategory("all")}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-medium whitespace-nowrap btn-tactile cursor-pointer border transition-colors ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-medium whitespace-nowrap btn-tactile cursor-pointer border transition-colors shrink-0 ${
                 selectedCategory === "all"
                   ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-transparent shadow-xs"
                   : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700"
@@ -133,7 +133,7 @@ export default function StorefrontPage() {
                 key={cat.id}
                 type="button"
                 onClick={() => setSelectedCategory(cat.slug)}
-                className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-medium whitespace-nowrap btn-tactile cursor-pointer border transition-colors ${
+                className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-medium whitespace-nowrap btn-tactile cursor-pointer border transition-colors shrink-0 ${
                   selectedCategory === cat.slug
                     ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-transparent shadow-xs"
                     : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700"
@@ -146,10 +146,9 @@ export default function StorefrontPage() {
           </div>
         </section>
 
-        {/* Product Grid */}
+        {/* Product Grid: 2 Cols on Mobile & Tablet (<1024px), 4 on Desktop */}
         {isLoading ? (
-          // Skeleton Loading Grid: 2 Columns on Mobile, 4 on Desktop
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
@@ -192,7 +191,7 @@ export default function StorefrontPage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 lg:gap-6">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -200,15 +199,15 @@ export default function StorefrontPage() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="mt-16 border-t border-zinc-200/80 dark:border-zinc-800/80 py-8 bg-white dark:bg-zinc-900/60 text-xs text-zinc-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      {/* Footer with Mobile Bottom Nav Clearance */}
+      <footer className="mt-16 border-t border-zinc-200/80 dark:border-zinc-800/80 py-8 pb-24 md:pb-8 bg-white dark:bg-zinc-900/60 text-xs text-zinc-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <div className="flex items-center gap-2">
             <span className="font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">ARCFIELD</span>
             <span>&bull;</span>
             <span>Precision Workspace Gear & Craft</span>
           </div>
-          <div className="flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 text-xs text-zinc-500 dark:text-zinc-400">
             <span>Free Shipping Over $150</span>
             <span>&bull;</span>
             <span>2-Year Warranty</span>
