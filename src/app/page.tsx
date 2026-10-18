@@ -7,6 +7,42 @@ import { ProductCard } from "@/components/domain/product-card";
 import { ScrollToTopSentinel } from "@/components/ui/scroll-to-top";
 import { useProductRealtime } from "@/hooks/use-product-realtime";
 import { Sparkles, Layers, SlidersHorizontal, PackageSearch } from "lucide-react";
+import { TiltedGridHero } from "@/components/ui/tilted-grid-hero";
+
+const SHOWCASE_HERO_FALLBACK_IMAGES = [
+  {
+    src: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80",
+    alt: "Arc Precision Mechanical Keyboard",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+    alt: "Acoustic Shield ANC Studio Headphones",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80",
+    alt: "Studio Hi-Fi Reference Desktop Monitors",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=800&q=80",
+    alt: "Pro Ergo Wireless Mouse",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?auto=format&fit=crop&w=800&q=80",
+    alt: "MagSafe 3-in-1 Aluminum Charging Stand",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=800&q=80",
+    alt: "Merino Wool & Vegan Leather Desk Mat",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1589384267710-7a170981ca78?auto=format&fit=crop&w=800&q=80",
+    alt: "Kinematic Lumbar Ergonomic Mesh Chair",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
+    alt: "Ultra-Wide 4K Studio Display",
+  },
+];
 
 interface Product {
   id: string;
@@ -69,6 +105,14 @@ export default function StorefrontPage() {
   const products = productsData?.products || [];
   const categories = categoriesData?.categories || [];
 
+  // Curate live equipment photography for the 3D cylindrical showcase ribbon
+  const showcaseImages = React.useMemo(() => {
+    if (products.length > 0) {
+      return products.map((p) => ({ src: p.imageUrl, alt: p.title }));
+    }
+    return SHOWCASE_HERO_FALLBACK_IMAGES;
+  }, [products]);
+
   return (
     <div className="relative min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
       {/* Zero-Scroll-Listener Sentinel */}
@@ -79,6 +123,28 @@ export default function StorefrontPage() {
 
       {/* Main Catalog Viewport */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 pb-28 md:pb-12">
+        {/* Standalone 3D Cylindrical Curved Gear Showcase Ribbon (Option B) */}
+        <section aria-label="Curated Studio Equipment Showcase" className="mb-4 sm:mb-6">
+          <TiltedGridHero
+            images={showcaseImages}
+            speed={4.5}
+            tileHeight={76}
+            aspectRatio={16 / 9}
+            curve={70}
+            fade={16}
+            gap={6}
+            axis={50}
+            className="h-[140px] sm:h-[180px] md:h-[220px] lg:h-[260px] w-full rounded-2xl sm:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/40 backdrop-blur-sm shadow-xs"
+          >
+            <div className="absolute top-2.5 left-3 sm:top-3.5 sm:left-4 z-10 pointer-events-none">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md text-[10px] sm:text-xs font-mono font-medium text-zinc-600 dark:text-zinc-400 border border-zinc-200/60 dark:border-zinc-800/60 shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Featured Equipment
+              </span>
+            </div>
+          </TiltedGridHero>
+        </section>
+
         {/* Optical Hero Banner */}
         <section className="relative rounded-2xl sm:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-linear-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950 p-5 sm:p-8 lg:p-10 mb-6 sm:mb-10 shadow-xs overflow-hidden">
           <div className="relative z-10 max-w-2xl">
