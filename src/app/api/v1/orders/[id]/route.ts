@@ -60,13 +60,20 @@ export async function GET(req: NextRequest, context: RouteContext) {
       throw new NotFoundError("Order receipt not found.");
     }
 
+    let parsedAddress: Record<string, unknown> = {};
+    try {
+      parsedAddress = typeof order.shippingAddress === "string" ? JSON.parse(order.shippingAddress) : order.shippingAddress;
+    } catch {
+      parsedAddress = { fullName: "Valued Customer", addressLine1: String(order.shippingAddress), city: "", country: "" };
+    }
+
     const formattedOrder = {
       id: order.id,
       orderNumber: order.orderNumber,
       userId: order.userId,
       totalAmount: Number(order.totalAmount),
       status: order.status,
-      shippingAddress: JSON.parse(order.shippingAddress),
+      shippingAddress: parsedAddress,
       items: order.items.map((item) => ({
         id: item.id,
         productId: item.productId,

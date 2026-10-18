@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingBag, User as UserIcon, Shield, Package, LogOut } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useCartStore } from "@/store/use-cart-store";
+import { useAuthSession } from "@/hooks/use-auth-session";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ExpandingSearchDock } from "@/components/ui/expanding-search-dock";
@@ -16,28 +18,17 @@ interface HeaderProps {
 
 export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
   const pathname = usePathname();
+  const queryClient = useQueryClient();
   const toggleCart = useCartStore((state) => state.toggleCart);
   const items = useCartStore((state) => state.items);
   const totalItemCount = items.reduce((acc, i) => acc + i.quantity, 0);
 
-  const [user, setUser] = useState<{ fullName: string; role: string; email: string } | null>(null);
-
-  useEffect(() => {
-    fetch("/api/v1/auth/me")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((json) => {
-        if (json?.success && json?.data?.user) {
-          setUser(json.data.user);
-        } else {
-          setUser(null);
-        }
-      })
-      .catch(() => setUser(null));
-  }, [pathname]);
+  const { user } = useAuthSession();
 
   const handleLogout = async () => {
     await fetch("/api/v1/auth/logout", { method: "POST" });
-    setUser(null);
+    queryClient.setQueryData(["auth_me"], { user: null });
+    queryClient.invalidateQueries({ queryKey: ["auth_me"] });
     window.location.href = "/";
   };
 

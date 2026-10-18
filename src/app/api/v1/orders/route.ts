@@ -231,24 +231,33 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const formattedOrders = orders.map((order) => ({
-      id: order.id,
-      orderNumber: order.orderNumber,
-      userId: order.userId,
-      user: order.user,
-      totalAmount: Number(order.totalAmount),
-      status: order.status,
-      shippingAddress: JSON.parse(order.shippingAddress),
-      items: order.items.map((item) => ({
-        id: item.id,
-        productId: item.productId,
-        quantity: item.quantity,
-        unitPrice: Number(item.unitPrice),
-        product: item.product,
-      })),
-      createdAt: order.createdAt,
-      updatedAt: order.updatedAt,
-    }));
+    const formattedOrders = orders.map((order) => {
+      let parsedAddress: Record<string, unknown> = {};
+      try {
+        parsedAddress = typeof order.shippingAddress === "string" ? JSON.parse(order.shippingAddress) : order.shippingAddress;
+      } catch {
+        parsedAddress = { fullName: "Valued Customer", addressLine1: String(order.shippingAddress), city: "", country: "" };
+      }
+
+      return {
+        id: order.id,
+        orderNumber: order.orderNumber,
+        userId: order.userId,
+        user: order.user,
+        totalAmount: Number(order.totalAmount),
+        status: order.status,
+        shippingAddress: parsedAddress,
+        items: order.items.map((item) => ({
+          id: item.id,
+          productId: item.productId,
+          quantity: item.quantity,
+          unitPrice: Number(item.unitPrice),
+          product: item.product,
+        })),
+        createdAt: order.createdAt,
+        updatedAt: order.updatedAt,
+      };
+    });
 
     return jsonResponse(
       {

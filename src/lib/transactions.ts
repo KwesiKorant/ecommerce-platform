@@ -104,6 +104,10 @@ export async function cancelOrderAtomic(orderId: string, performedBy: string, is
     throw new BadRequestError("Delivered orders cannot be cancelled.");
   }
 
+  if (!isAdmin && order.status === OrderStatus.SHIPPED) {
+    throw new BadRequestError("Shipped orders cannot be cancelled directly. Please contact support for assistance.");
+  }
+
   // Pipelined atomic multi-table transaction
   return prisma.$transaction(async (tx) => {
     // 1. Mark order CANCELLED
