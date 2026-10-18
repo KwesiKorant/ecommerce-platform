@@ -74,6 +74,19 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
               <Package className="w-3.5 h-3.5" />
               <span>Orders</span>
             </Link>
+            {user && (
+              <Link
+                href="/account"
+                className={`px-3 py-1.5 rounded-md transition-colors btn-tactile flex items-center gap-1 ${
+                  pathname === "/account"
+                    ? "text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800"
+                    : "hover:text-zinc-900 dark:hover:text-zinc-100"
+                }`}
+              >
+                <UserIcon className="w-3.5 h-3.5" />
+                <span>Account</span>
+              </Link>
+            )}
             {user?.role === "ADMIN" && (
               <Link
                 href="/admin"
@@ -105,12 +118,16 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
           {/* Auth State */}
           {user ? (
             <div className="flex items-center gap-2 pl-1 border-l border-zinc-200 dark:border-zinc-800">
-              <div className="hidden lg:flex flex-col text-right">
+              <Link
+                href="/account"
+                className="hidden lg:flex flex-col text-right hover:opacity-80 transition-opacity"
+                title="Go to Account & Saved Addresses"
+              >
                 <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200 truncate max-w-[110px]">
                   {user.fullName}
                 </span>
                 <span className="text-[10px] font-mono text-zinc-400">{user.role}</span>
-              </div>
+              </Link>
               <button
                 type="button"
                 onClick={handleLogout}

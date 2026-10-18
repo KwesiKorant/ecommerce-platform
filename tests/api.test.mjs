@@ -529,6 +529,145 @@ async function runTestSuite() {
   }
 
   // -------------------------------------------------------------
+  // AC-10: Customer Saved Address Lifecycle & Anti-IDOR Isolation
+  // -------------------------------------------------------------
+  console.log("\n[TEST 10] AC-10: Customer Saved Address Lifecycle & Anti-IDOR Isolation");
+  try {
+    // 0. Ensure deterministic test starting state by purging previous test addresses
+    const initListRes = await fetch(`${BASE_URL}/api/v1/addresses`, {
+      headers: { Cookie: customerCookie, "X-Forwarded-For": randomIp() },
+    });
+    const initListJson = await initListRes.json();
+    if (Array.isArray(initListJson.data)) {
+      for (const a of initListJson.data) {
+        await fetch(`${BASE_URL}/api/v1/addresses/${a.id}`, {
+          method: "DELETE",
+          headers: { Cookie: customerCookie, "X-Forwarded-For": randomIp() },
+        });
+      }
+    }
+
+    // 1. Customer A creates first address (should auto-become isDefault: true)
+    const createAddrRes = await fetch(`${BASE_URL}/api/v1/addresses`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: customerCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+      body: JSON.stringify({
+        fullName: "Ama Serwaa",
+        addressLine1: "144 Silicon Ave",
+        city: "San Francisco",
+        postalCode: "94107",
+        country: "United States",
+      }),
+    });
+    const createAddrJson = await createAddrRes.json();
+    assert(createAddrRes.status === 201, "Creating address returns HTTP 201");
+    assert(createAddrJson.success === true, "Address response contains success: true");
+    assert(createAddrJson.data.isDefault === true, "First address automatically set as default");
+    const addr1Id = createAddrJson.data.id;
+
+    // 2. Customer A creates second address with isDefault: true -> atomicity check
+    const createAddr2Res = await fetch(`${BASE_URL}/api/v1/addresses`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: customerCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+      body: JSON.stringify({
+        fullName: "Ama Serwaa",
+        addressLine1: "88 Design Blvd",
+        city: "Oakland",
+        postalCode: "94612",
+        country: "United States",
+        isDefault: true,
+      }),
+    });
+    const createAddr2Json = await createAddr2Res.json();
+    assert(createAddr2Res.status === 201, "Creating second address returns HTTP 201");
+    assert(createAddr2Json.data.isDefault === true, "Second address set as default");
+    const addr2Id = createAddr2Json.data.id;
+
+    // 3. Customer A queries address listing -> returns both addresses with addr2 first
+    const listRes = await fetch(`${BASE_URL}/api/v1/addresses`, {
+      headers: {
+        Cookie: customerCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+    });
+    const listJson = await listRes.json();
+    assert(listRes.status === 200, "Querying saved addresses returns HTTP 200");
+    assert(Array.isArray(listJson.data), "Addresses response is an array");
+    assert(listJson.data.length >= 2, "Address list contains both saved addresses");
+    assert(listJson.data[0].id === addr2Id, "Default address is returned first in order");
+
+    // 4. Anti-IDOR Isolation: Customer B attempts to modify Customer A's address -> 404 NOT_FOUND
+    const idorPatchRes = await fetch(`${BASE_URL}/api/v1/addresses/${addr1Id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: customer2Cookie,
+        "X-Forwarded-For": randomIp(),
+      },
+      body: JSON.stringify({
+        addressLine1: "Hacked Address",
+      }),
+    });
+    assert(idorPatchRes.status === 404, "Customer B modifying Customer A's address receives HTTP 404 NOT_FOUND");
+
+    // 5. Anti-IDOR Isolation: Customer B attempts to delete Customer A's address -> 404 NOT_FOUND
+    const idorDeleteRes = await fetch(`${BASE_URL}/api/v1/addresses/${addr1Id}`, {
+      method: "DELETE",
+      headers: {
+        Cookie: customer2Cookie,
+        "X-Forwarded-For": randomIp(),
+      },
+    });
+    assert(idorDeleteRes.status === 404, "Customer B deleting Customer A's address receives HTTP 404 NOT_FOUND");
+
+    // 6. Customer A updates address details
+    const patchRes = await fetch(`${BASE_URL}/api/v1/addresses/${addr1Id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: customerCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+      body: JSON.stringify({
+        city: "San Jose",
+      }),
+    });
+    const patchJson = await patchRes.json();
+    assert(patchRes.status === 200, "Customer A updating own address returns HTTP 200");
+    assert(patchJson.data.city === "San Jose", "Address city updated to San Jose");
+
+    // 7. Customer A deletes address addr2 -> default promoted to addr1
+    const deleteRes = await fetch(`${BASE_URL}/api/v1/addresses/${addr2Id}`, {
+      method: "DELETE",
+      headers: {
+        Cookie: customerCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+    });
+    assert(deleteRes.status === 200, "Customer A deleting own address returns HTTP 200");
+
+    const recheckList = await fetch(`${BASE_URL}/api/v1/addresses`, {
+      headers: {
+        Cookie: customerCookie,
+        "X-Forwarded-For": randomIp(),
+      },
+    });
+    const recheckJson = await recheckList.json();
+    const remainingAddr = recheckJson.data.find((a) => a.id === addr1Id);
+    assert(remainingAddr && remainingAddr.isDefault === true, "Remaining address was promoted to default");
+  } catch (err) {
+    console.error("AC-10 Error:", err.message);
+  }
+
+  // -------------------------------------------------------------
   // Summary
   // -------------------------------------------------------------
   console.log("\n========================================================");

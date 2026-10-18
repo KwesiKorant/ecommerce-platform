@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "motion/react";
 import {
   X,
@@ -55,6 +56,44 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
     postalCode: "GA-123-4567",
     country: "Ghana",
   });
+
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
+
+  // Query customer saved addresses
+  const { data: savedAddresses = [] } = useQuery<{
+    id: string;
+    fullName: string;
+    addressLine1: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    isDefault: boolean;
+  }[]>({
+    queryKey: ["saved-addresses-checkout"],
+    queryFn: async () => {
+      const res = await fetch("/api/v1/addresses");
+      if (!res.ok) return [];
+      const json = await res.json();
+      return json.data || [];
+    },
+    enabled: isOpen,
+  });
+
+  // Pre-fill with customer default address if available
+  useEffect(() => {
+    if (savedAddresses.length > 0 && !selectedAddressId) {
+      const defaultAddr = savedAddresses.find((a) => a.isDefault) || savedAddresses[0];
+      setSelectedAddressId(defaultAddr.id);
+      setShippingAddress({
+        fullName: defaultAddr.fullName,
+        addressLine1: defaultAddr.addressLine1,
+        addressLine2: "",
+        city: defaultAddr.city,
+        postalCode: defaultAddr.postalCode,
+        country: defaultAddr.country,
+      });
+    }
+  }, [savedAddresses, selectedAddressId]);
 
   if (!isOpen) return null;
 
@@ -236,13 +275,63 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
                 transition={{ duration: 0.18 }}
                 className="space-y-3.5"
               >
+                {savedAddresses.length > 0 && (
+                  <div className="space-y-1.5 pb-1">
+                    <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-500">
+                      Saved Shipping Addresses
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {savedAddresses.map((addr) => {
+                        const isSelected = selectedAddressId === addr.id;
+                        return (
+                          <button
+                            key={addr.id}
+                            type="button"
+                            onClick={() => {
+                              setSelectedAddressId(addr.id);
+                              setShippingAddress({
+                                fullName: addr.fullName,
+                                addressLine1: addr.addressLine1,
+                                addressLine2: "",
+                                city: addr.city,
+                                postalCode: addr.postalCode,
+                                country: addr.country,
+                              });
+                            }}
+                            className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer text-xs ${
+                              isSelected
+                                ? "border-emerald-500 bg-emerald-500/5 ring-1 ring-emerald-500/20"
+                                : "border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between font-semibold text-zinc-900 dark:text-zinc-100 mb-0.5">
+                              <span className="truncate">{addr.fullName}</span>
+                              {addr.isDefault && (
+                                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono shrink-0 ml-1">
+                                  Default
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[11px] text-zinc-500 truncate">
+                              {addr.addressLine1}, {addr.city}
+                            </p>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div className="sm:col-span-2">
                     <label className="block text-zinc-500 font-medium mb-1">Full Name</label>
                     <input
                       type="text"
                       value={shippingAddress.fullName}
-                      onChange={(e) => setShippingAddress({ ...shippingAddress, fullName: e.target.value })}
+                      onChange={(e) => {
+                        setSelectedAddressId(null);
+                        setShippingAddress({ ...shippingAddress, fullName: e.target.value });
+                      }}
                       className="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100"
                     />
                   </div>
