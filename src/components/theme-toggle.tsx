@@ -9,15 +9,16 @@ function subscribe() {
 }
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const mounted = useSyncExternalStore(
     subscribe,
     () => true,
     () => false
   );
 
-  const cycleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const nextTheme = theme === "dark" ? "light" : theme === "light" ? "system" : "dark";
+  const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const isDark = resolvedTheme === "dark";
+    const nextTheme = isDark ? "light" : "dark";
 
     // Reduced motion or View Transition unsupported fallback
     if (
@@ -38,8 +39,16 @@ export function ThemeToggle() {
     );
 
     // Native document.startViewTransition with circular ripple
+    // Mutate DOM class synchronously within transition callback so the new view snapshot captures the updated theme styles
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const transition = (document as any).startViewTransition(() => {
+      if (nextTheme === "dark") {
+        document.documentElement.classList.add("dark");
+        document.documentElement.style.colorScheme = "dark";
+      } else {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.style.colorScheme = "light";
+      }
       setTheme(nextTheme);
     });
 
@@ -66,19 +75,19 @@ export function ThemeToggle() {
     );
   }
 
+  const isDark = resolvedTheme === "dark";
+
   return (
     <button
       type="button"
-      onClick={cycleTheme}
-      aria-label={`Theme: ${theme}. Click to switch theme`}
-      className="flex items-center justify-center w-9 h-9 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 text-zinc-600 dark:text-zinc-300 btn-tactile cursor-pointer"
+      onClick={toggleTheme}
+      aria-label={`Current theme: ${resolvedTheme}. Click to switch to ${isDark ? "light" : "dark"} mode`}
+      className="flex items-center justify-center w-9 h-9 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 text-zinc-600 dark:text-zinc-300 btn-tactile cursor-pointer shadow-xs"
     >
-      {theme === "dark" ? (
+      {isDark ? (
         <Moon className="w-4 h-4 text-indigo-400" />
-      ) : theme === "light" ? (
-        <Sun className="w-4 h-4 text-amber-500" />
       ) : (
-        <Monitor className="w-4 h-4 text-zinc-400" />
+        <Sun className="w-4 h-4 text-amber-500" />
       )}
     </button>
   );
