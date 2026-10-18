@@ -8,6 +8,7 @@ import { ScrollToTopSentinel } from "@/components/ui/scroll-to-top";
 import { useProductRealtime } from "@/hooks/use-product-realtime";
 import { Sparkles, Layers, SlidersHorizontal, PackageSearch, ArrowDown } from "lucide-react";
 import { TiltedGridHero } from "@/components/ui/tilted-grid-hero";
+import { BrandLogo } from "@/components/layout/brand-logo";
 
 const SHOWCASE_HERO_FALLBACK_IMAGES = [
   {
@@ -334,7 +335,10 @@ export default function StorefrontPage() {
       {/* Footer with Mobile Bottom Nav Clearance */}
       <footer className="mt-16 border-t border-zinc-200/80 dark:border-zinc-800/80 py-8 pb-24 md:pb-8 bg-white dark:bg-zinc-900/60 text-xs text-zinc-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
+            <div className="w-5 h-5 rounded-md bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center p-1 shrink-0">
+              <BrandLogo className="w-full h-full text-white dark:text-zinc-900" />
+            </div>
             <span className="font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">ARCFIELD SYSTEMS</span>
             <span>&bull;</span>
             <span>Precision Workspace Gear & Craft</span>

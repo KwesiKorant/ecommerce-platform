@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Lock, Mail, User as UserIcon, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 import { sanitizeRedirectUrl } from "@/lib/security";
+import { BrandLogo } from "@/components/layout/brand-logo";
 
 export interface AuthCardProps {
   initialMode?: "login" | "register";
@@ -129,7 +130,10 @@ export function AuthCard({ initialMode = "login", redirectNext = "/", onSuccess 
       </div>
 
       {/* Header */}
-      <div className="mb-6 text-center">
+      <div className="mb-6 text-center flex flex-col items-center">
+        <div className="w-10 h-10 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center p-2 mb-3 shadow-sm">
+          <BrandLogo className="w-full h-full text-white dark:text-zinc-900" />
+        </div>
         <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
           {mode === "login" ? "Welcome Back" : "Create Your Account"}
         </h2>

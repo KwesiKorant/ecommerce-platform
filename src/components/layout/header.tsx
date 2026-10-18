@@ -10,6 +10,7 @@ import { useAuthSession } from "@/hooks/use-auth-session";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ExpandingSearchDock } from "@/components/ui/expanding-search-dock";
+import { BrandLogo } from "@/components/layout/brand-logo";
 
 interface HeaderProps {
   searchQuery?: string;
@@ -38,8 +39,8 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
         {/* Brand Logo */}
         <div className="flex items-center gap-3 lg:gap-6">
           <Link href="/" className="flex items-center gap-2 group btn-tactile shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center font-bold text-sm tracking-wider shadow-sm">
-              AF
+            <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center p-1.5 shadow-sm">
+              <BrandLogo className="w-full h-full text-white dark:text-zinc-900" />
             </div>
             <div className="flex flex-col">
               <span className="font-bold tracking-tight text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
