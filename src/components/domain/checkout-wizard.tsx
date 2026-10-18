@@ -157,7 +157,7 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
   const progressPercent = step === 1 ? 0.25 : step === 2 ? 0.5 : step === 3 ? 0.75 : 1.0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-hidden">
       {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -171,12 +171,12 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
       <motion.div
         layout
         transition={{ type: "spring", stiffness: 380, damping: 32 }}
-        className={`relative z-10 w-full max-w-lg rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl overflow-hidden ${
+        className={`relative z-10 w-full max-w-lg max-h-[92vh] flex flex-col rounded-2xl sm:rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl overflow-hidden ${
           isShaking ? "animate-shake" : ""
         }`}
       >
         {/* Zero-Layout-Shift Progress Bar (scaleX) */}
-        <div className="w-full h-1 bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+        <div className="w-full h-1 bg-zinc-100 dark:bg-zinc-800 overflow-hidden shrink-0">
           <div
             className="w-full h-full bg-emerald-600 dark:bg-emerald-500 origin-left transition-transform duration-500 ease-out"
             style={{ transform: `scaleX(${progressPercent})` }}
@@ -184,7 +184,7 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
         </div>
 
         {/* Wizard Header */}
-        <div className="px-6 py-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono text-zinc-400">Step {step} of 4</span>
             <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">
@@ -207,14 +207,14 @@ export function CheckoutWizard({ isOpen, onClose, onOrderCompleted }: CheckoutWi
 
         {/* Error Alert Display */}
         {errorMessage && (
-          <div className="mx-6 mt-4 p-3 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
+          <div className="mx-4 sm:mx-6 mt-3 sm:mt-4 p-3 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2 shrink-0">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {/* Directional popLayout Steps Container */}
-        <div className="p-6 relative min-h-[300px]">
+        <div className="p-4 sm:p-6 relative min-h-[260px] overflow-y-auto flex-1">
           <AnimatePresence mode="popLayout" custom={direction}>
             {/* STEP 1: REVIEW CART */}
             {step === 1 && (

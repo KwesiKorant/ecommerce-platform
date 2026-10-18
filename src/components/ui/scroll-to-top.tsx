@@ -55,7 +55,7 @@ export function ScrollToTopButton() {
           exit={{ opacity: 0, scale: 0.8, y: 12 }}
           transition={{ type: "spring", stiffness: 420, damping: 28 }}
           aria-label="Scroll to top of catalog"
-          className="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xl btn-tactile cursor-pointer"
+          className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-30 p-2.5 sm:p-3 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xl btn-tactile cursor-pointer"
         >
           <ArrowUp className="w-4 h-4" />
         </motion.button>

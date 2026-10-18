@@ -34,10 +34,10 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-30 w-full border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 glass-panel transition-colors duration-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand Logo */}
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2 group btn-tactile">
+        <div className="flex items-center gap-3 sm:gap-6">
+          <Link href="/" className="flex items-center gap-2 group btn-tactile shrink-0">
             <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 flex items-center justify-center font-bold text-sm tracking-wider shadow-sm">
               AF
             </div>
@@ -45,7 +45,7 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
               <span className="font-bold tracking-tight text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
                 ARCFIELD
               </span>
-              <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5">
+              <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase -mt-0.5 hidden xs:block">
                 Precision Retail
               </span>
             </div>
@@ -139,7 +139,7 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
                 type="button"
                 onClick={handleLogout}
                 title="Sign out"
-                className="p-2 rounded-full text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 btn-tactile cursor-pointer"
+                className="p-2 rounded-xl text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors btn-tactile cursor-pointer"
               >
                 <LogOut className="w-4 h-4" />
               </button>

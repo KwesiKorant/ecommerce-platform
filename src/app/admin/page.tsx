@@ -342,7 +342,7 @@ export default function AdminPage() {
     <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
       <Header />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 pb-24 md:pb-12">
         {/* Top Header & Breadcrumbs */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
@@ -361,7 +361,7 @@ export default function AdminPage() {
             <button
               type="button"
               onClick={() => setIsCreateOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-semibold btn-tactile shadow-sm cursor-pointer"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-semibold btn-tactile shadow-sm cursor-pointer w-full sm:w-auto"
             >
               <Plus className="w-4 h-4" />
               <span>Create New Product</span>
@@ -378,11 +378,11 @@ export default function AdminPage() {
         )}
 
         {/* Segmented Tab Navigation Control */}
-        <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 mb-8 pb-3">
+        <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 mb-6 sm:mb-8 pb-3 overflow-x-auto no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
           <button
             type="button"
             onClick={() => setActiveTab("products")}
-            className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-colors btn-tactile cursor-pointer ${
+            className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-colors btn-tactile cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === "products"
                 ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
                 : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
@@ -396,7 +396,7 @@ export default function AdminPage() {
           <button
             type="button"
             onClick={() => setActiveTab("orders")}
-            className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-colors btn-tactile cursor-pointer ${
+            className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-colors btn-tactile cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === "orders"
                 ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
                 : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
@@ -412,7 +412,7 @@ export default function AdminPage() {
           <button
             type="button"
             onClick={() => setActiveTab("audit")}
-            className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-colors btn-tactile cursor-pointer ${
+            className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-colors btn-tactile cursor-pointer whitespace-nowrap shrink-0 ${
               activeTab === "audit"
                 ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs"
                 : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"

@@ -5,6 +5,7 @@ import { Providers } from "@/components/providers";
 import { OfflineIndicator } from "@/components/ui/offline-indicator";
 import { ScrollToTopButton } from "@/components/ui/scroll-to-top";
 import { GlobalCartModals } from "@/components/layout/global-cart-modals";
+import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
         <Providers>
           {children}
           <GlobalCartModals />
+          <MobileBottomNav />
           <OfflineIndicator />
           <ScrollToTopButton />
         </Providers>

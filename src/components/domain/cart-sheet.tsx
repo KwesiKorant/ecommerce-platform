@@ -46,15 +46,21 @@ export function CartSheet({ onStartCheckout }: CartSheetProps) {
           />
 
           {/* Drawer / Bottom Sheet Container */}
-          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10 sm:pl-16">
+          <div
+            className={`fixed ${
+              isMobile ? "inset-x-0 bottom-0 z-50" : "inset-y-0 right-0 max-w-full flex pl-10 sm:pl-16 z-50"
+            }`}
+          >
             <motion.div
               {...dragProps}
               initial={isMobile ? { y: "100%" } : { x: "100%" }}
               animate={isMobile ? { y: 0 } : { x: 0 }}
               exit={isMobile ? { y: "100%" } : { x: "100%" }}
               transition={{ type: "spring", stiffness: 380, damping: 32 }}
-              className={`w-screen max-w-md bg-white dark:bg-zinc-900 border-l border-zinc-200 dark:border-zinc-800 shadow-2xl flex flex-col ${
-                isMobile ? "rounded-t-2xl max-h-[92vh] mt-auto" : "h-full"
+              className={`bg-white dark:bg-zinc-900 shadow-2xl flex flex-col ${
+                isMobile
+                  ? "w-full rounded-t-3xl max-h-[90vh] border-t border-zinc-200 dark:border-zinc-800"
+                  : "w-screen max-w-md h-full border-l border-zinc-200 dark:border-zinc-800"
               }`}
             >
               {/* Mobile Sheet Drag Handle */}

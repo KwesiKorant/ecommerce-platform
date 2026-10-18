@@ -164,9 +164,9 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
     <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
       <Header />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 pb-24 md:pb-12">
         {/* Breadcrumb Navigation */}
-        <nav aria-label="Breadcrumb" className="mb-6 flex items-center justify-between">
+        <nav aria-label="Breadcrumb" className="mb-4 sm:mb-6 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
           <ol className="flex items-center gap-2 text-xs font-mono text-zinc-400">
             <li>
               <Link href="/" className="hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
@@ -204,10 +204,10 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
         </nav>
 
         {/* Product Core Display Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 mb-12 sm:mb-16">
           {/* Left Column: Optical Product Gallery (7 Cols) */}
-          <div className="lg:col-span-7 space-y-4">
-            <div className="group relative aspect-4/3 w-full rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 shadow-xs">
+          <div className="lg:col-span-7 space-y-3 sm:space-y-4">
+            <div className="group relative aspect-4/3 w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 shadow-xs">
               <Image
                 src={product.imageUrl}
                 alt={product.title}
@@ -246,27 +246,27 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
             </div>
 
             {/* Micro Feature Badges Under Image */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="p-3 rounded-2xl border border-zinc-200/70 dark:border-zinc-800/70 bg-white dark:bg-zinc-900/40 text-center">
-                <Cpu className="w-4 h-4 text-zinc-500 dark:text-zinc-400 mx-auto mb-1" />
-                <span className="text-[11px] font-medium text-zinc-700 dark:text-zinc-300 block">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              <div className="p-2 sm:p-3 rounded-xl sm:rounded-2xl border border-zinc-200/70 dark:border-zinc-800/70 bg-white dark:bg-zinc-900/40 text-center">
+                <Cpu className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-zinc-500 dark:text-zinc-400 mx-auto mb-1" />
+                <span className="text-[10px] sm:text-[11px] font-medium text-zinc-700 dark:text-zinc-300 block truncate">
                   Precision Milled
                 </span>
-                <span className="text-[10px] text-zinc-400 font-mono">Aerospace Spec</span>
+                <span className="text-[9px] sm:text-[10px] text-zinc-400 font-mono block truncate">Aerospace Spec</span>
               </div>
-              <div className="p-3 rounded-2xl border border-zinc-200/70 dark:border-zinc-800/70 bg-white dark:bg-zinc-900/40 text-center">
-                <ShieldCheck className="w-4 h-4 text-emerald-500 mx-auto mb-1" />
-                <span className="text-[11px] font-medium text-zinc-700 dark:text-zinc-300 block">
+              <div className="p-2 sm:p-3 rounded-xl sm:rounded-2xl border border-zinc-200/70 dark:border-zinc-800/70 bg-white dark:bg-zinc-900/40 text-center">
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500 mx-auto mb-1" />
+                <span className="text-[10px] sm:text-[11px] font-medium text-zinc-700 dark:text-zinc-300 block truncate">
                   2-Year Warranty
                 </span>
-                <span className="text-[10px] text-zinc-400 font-mono">Full Replacement</span>
+                <span className="text-[9px] sm:text-[10px] text-zinc-400 font-mono block truncate">Full Cover</span>
               </div>
-              <div className="p-3 rounded-2xl border border-zinc-200/70 dark:border-zinc-800/70 bg-white dark:bg-zinc-900/40 text-center">
-                <Truck className="w-4 h-4 text-indigo-500 mx-auto mb-1" />
-                <span className="text-[11px] font-medium text-zinc-700 dark:text-zinc-300 block">
-                  Express Delivery
+              <div className="p-2 sm:p-3 rounded-xl sm:rounded-2xl border border-zinc-200/70 dark:border-zinc-800/70 bg-white dark:bg-zinc-900/40 text-center">
+                <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-500 mx-auto mb-1" />
+                <span className="text-[10px] sm:text-[11px] font-medium text-zinc-700 dark:text-zinc-300 block truncate">
+                  Express Dispatch
                 </span>
-                <span className="text-[10px] text-zinc-400 font-mono">Dispatches in 24h</span>
+                <span className="text-[9px] sm:text-[10px] text-zinc-400 font-mono block truncate">Ships in 24h</span>
               </div>
             </div>
           </div>
@@ -431,12 +431,12 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
         </div>
 
         {/* Detailed Information Tabs (Technical Specs, Shipping & Returns, Warranty) */}
-        <section className="mb-16">
-          <div className="border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-8 mb-8">
+        <section className="mb-12 sm:mb-16">
+          <div className="border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-4 sm:gap-8 mb-6 sm:mb-8 overflow-x-auto no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
             <button
               type="button"
               onClick={() => setActiveTab("specs")}
-              className={`pb-3 text-sm font-semibold relative transition-colors cursor-pointer ${
+              className={`pb-3 text-xs sm:text-sm font-semibold relative transition-colors cursor-pointer whitespace-nowrap ${
                 activeTab === "specs"
                   ? "text-zinc-900 dark:text-zinc-100"
                   : "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300"
@@ -454,7 +454,7 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
             <button
               type="button"
               onClick={() => setActiveTab("shipping")}
-              className={`pb-3 text-sm font-semibold relative transition-colors cursor-pointer ${
+              className={`pb-3 text-xs sm:text-sm font-semibold relative transition-colors cursor-pointer whitespace-nowrap ${
                 activeTab === "shipping"
                   ? "text-zinc-900 dark:text-zinc-100"
                   : "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300"
@@ -472,7 +472,7 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
             <button
               type="button"
               onClick={() => setActiveTab("warranty")}
-              className={`pb-3 text-sm font-semibold relative transition-colors cursor-pointer ${
+              className={`pb-3 text-xs sm:text-sm font-semibold relative transition-colors cursor-pointer whitespace-nowrap ${
                 activeTab === "warranty"
                   ? "text-zinc-900 dark:text-zinc-100"
                   : "text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300"
@@ -562,7 +562,7 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
               {relatedProducts.map((rel) => (
                 <ProductCard key={rel.id} product={rel} />
               ))}

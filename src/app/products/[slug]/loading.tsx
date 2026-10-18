@@ -11,9 +11,9 @@ export default function ProductLoading() {
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 flex flex-col font-sans">
       <Header />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 pb-24 md:pb-12">
         {/* Breadcrumb Skeleton */}
-        <div className="flex items-center gap-2 mb-8">
+        <div className="flex items-center gap-2 mb-6 sm:mb-8">
           <div className="w-16 h-3 rounded bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
           <div className="w-2 h-3 rounded bg-zinc-200 dark:bg-zinc-800" />
           <div className="w-20 h-3 rounded bg-zinc-200 dark:bg-zinc-800 animate-pulse" />
@@ -22,15 +22,15 @@ export default function ProductLoading() {
         </div>
 
         {/* Hero Section Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
           {/* Gallery Skeleton (7 cols) */}
-          <div className="lg:col-span-7 space-y-4">
-            <div className="aspect-4/3 w-full rounded-3xl bg-zinc-200/70 dark:bg-zinc-800/60 animate-pulse border border-zinc-200 dark:border-zinc-800 shadow-sm" />
-            <div className="grid grid-cols-3 gap-3">
+          <div className="lg:col-span-7 space-y-3 sm:space-y-4">
+            <div className="aspect-4/3 w-full rounded-2xl sm:rounded-3xl bg-zinc-200/70 dark:bg-zinc-800/60 animate-pulse border border-zinc-200 dark:border-zinc-800 shadow-sm" />
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className="aspect-4/3 rounded-xl bg-zinc-200/50 dark:bg-zinc-800/40 animate-pulse border border-zinc-200/60 dark:border-zinc-800/60"
+                  className="aspect-4/3 rounded-xl sm:rounded-2xl bg-zinc-200/50 dark:bg-zinc-800/40 animate-pulse border border-zinc-200/60 dark:border-zinc-800/60"
                 />
               ))}
             </div>

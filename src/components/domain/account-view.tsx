@@ -235,7 +235,7 @@ export function AccountView({ initialUser }: AccountViewProps) {
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 flex flex-col font-sans transition-colors duration-200">
       <Header />
 
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 pb-24 md:pb-12">
         {/* Breadcrumb Navigation */}
         <div className="flex items-center gap-2 text-xs text-zinc-500 mb-6 font-mono">
           <Link href="/" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
@@ -274,8 +274,8 @@ export function AccountView({ initialUser }: AccountViewProps) {
             </div>
 
             {/* Quick Metrics */}
-            <div className="flex items-center gap-3 sm:gap-6 pt-4 sm:pt-0 border-t sm:border-t-0 border-zinc-100 dark:border-zinc-800/80">
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-4 py-2.5 border border-zinc-200/60 dark:border-zinc-800 text-center">
+            <div className="flex items-center gap-3 sm:gap-6 pt-4 sm:pt-0 border-t sm:border-t-0 border-zinc-100 dark:border-zinc-800/80 w-full sm:w-auto">
+              <div className="flex-1 sm:flex-none bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-4 py-2.5 border border-zinc-200/60 dark:border-zinc-800 text-center">
                 <span className="block text-xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
                   {orders.length}
                 </span>
@@ -283,7 +283,7 @@ export function AccountView({ initialUser }: AccountViewProps) {
                   Total Orders
                 </span>
               </div>
-              <div className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-4 py-2.5 border border-zinc-200/60 dark:border-zinc-800 text-center">
+              <div className="flex-1 sm:flex-none bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-4 py-2.5 border border-zinc-200/60 dark:border-zinc-800 text-center">
                 <span className="block text-xl font-bold font-mono text-zinc-900 dark:text-zinc-100">
                   {addresses.length}
                 </span>
@@ -311,7 +311,7 @@ export function AccountView({ initialUser }: AccountViewProps) {
             <button
               type="button"
               onClick={openCreateModal}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors btn-tactile cursor-pointer shadow-sm"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors btn-tactile cursor-pointer shadow-sm w-full sm:w-auto"
             >
               <Plus className="w-4 h-4" />
               <span>Add New Address</span>
@@ -479,9 +479,9 @@ export function AccountView({ initialUser }: AccountViewProps) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="relative w-full max-w-lg bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden z-10"
+              className="relative w-full max-w-lg max-h-[90vh] flex flex-col bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden z-10"
             >
-              <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800">
+              <div className="flex items-center justify-between p-5 sm:p-6 border-b border-zinc-100 dark:border-zinc-800 shrink-0">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-700 dark:text-zinc-300">
                     <MapPin className="w-4 h-4 text-emerald-500" />
@@ -499,7 +499,7 @@ export function AccountView({ initialUser }: AccountViewProps) {
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="p-6 space-y-4">
+              <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4 overflow-y-auto">
                 {formError && (
                   <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 text-rose-700 dark:text-rose-400 text-xs">
                     <AlertCircle className="w-4 h-4 shrink-0" />

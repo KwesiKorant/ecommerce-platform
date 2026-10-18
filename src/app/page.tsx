@@ -78,18 +78,18 @@ export default function StorefrontPage() {
       <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
       {/* Main Catalog Viewport */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 pb-24 md:pb-12">
         {/* Optical Hero Banner */}
-        <section className="relative rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-linear-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950 p-6 sm:p-10 mb-8 sm:mb-12 shadow-xs overflow-hidden">
+        <section className="relative rounded-2xl sm:rounded-3xl border border-zinc-200/80 dark:border-zinc-800/80 bg-linear-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950 p-5 sm:p-10 mb-6 sm:mb-10 shadow-xs overflow-hidden">
           <div className="relative z-10 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 text-xs font-medium mb-4">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 text-[11px] sm:text-xs font-medium mb-3 sm:mb-4">
               <Sparkles className="w-3.5 h-3.5 text-amber-500" />
               <span>Engineered For Precision & Durability</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.15]">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.2]">
               Precision Equipment. Zero-Compromise Engineering.
             </h1>
-            <p className="mt-3 sm:mt-4 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            <p className="mt-2.5 sm:mt-4 text-xs sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed">
               Carefully curated workspace essentials, tactile mechanical interfaces, and studio audio equipment crafted with uncompromising quality and attention to detail.
             </p>
           </div>
@@ -100,8 +100,8 @@ export default function StorefrontPage() {
         </section>
 
         {/* Category Filter Pills & Search Stats */}
-        <section className="mb-8">
-          <div className="flex items-center justify-between gap-4 mb-4">
+        <section className="mb-6 sm:mb-8">
+          <div className="flex items-center justify-between gap-4 mb-3 sm:mb-4">
             <div className="flex items-center gap-2">
               <Layers className="w-4 h-4 text-zinc-400" />
               <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
@@ -115,11 +115,11 @@ export default function StorefrontPage() {
             )}
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 -mx-3 px-3 sm:mx-0 sm:px-0 no-scrollbar">
             <button
               type="button"
               onClick={() => setSelectedCategory("all")}
-              className={`px-4 py-2 rounded-xl text-xs font-medium whitespace-nowrap btn-tactile cursor-pointer border transition-colors ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-medium whitespace-nowrap btn-tactile cursor-pointer border transition-colors ${
                 selectedCategory === "all"
                   ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-transparent shadow-xs"
                   : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700"
@@ -133,7 +133,7 @@ export default function StorefrontPage() {
                 key={cat.id}
                 type="button"
                 onClick={() => setSelectedCategory(cat.slug)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium whitespace-nowrap btn-tactile cursor-pointer border transition-colors ${
+                className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-medium whitespace-nowrap btn-tactile cursor-pointer border transition-colors ${
                   selectedCategory === cat.slug
                     ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 border-transparent shadow-xs"
                     : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700"
@@ -148,31 +148,31 @@ export default function StorefrontPage() {
 
         {/* Product Grid */}
         {isLoading ? (
-          // Skeleton Loading Grid
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          // Skeleton Loading Grid: 2 Columns on Mobile, 4 on Desktop
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60 bg-white dark:bg-zinc-900/40 p-4 animate-pulse space-y-3"
+                className="rounded-xl sm:rounded-2xl border border-zinc-200/60 dark:border-zinc-800/60 bg-white dark:bg-zinc-900/40 p-2.5 sm:p-4 animate-pulse space-y-2.5 sm:space-y-3"
               >
-                <div className="aspect-4/3 w-full rounded-xl bg-zinc-200 dark:bg-zinc-800" />
-                <div className="h-4 w-3/4 rounded bg-zinc-200 dark:bg-zinc-800" />
+                <div className="aspect-4/3 w-full rounded-lg sm:rounded-xl bg-zinc-200 dark:bg-zinc-800" />
+                <div className="h-3.5 sm:h-4 w-3/4 rounded bg-zinc-200 dark:bg-zinc-800" />
                 <div className="h-3 w-1/2 rounded bg-zinc-200 dark:bg-zinc-800" />
-                <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex justify-between">
-                  <div className="h-5 w-16 rounded bg-zinc-200 dark:bg-zinc-800" />
-                  <div className="h-8 w-24 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
+                <div className="pt-2 sm:pt-3 border-t border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
+                  <div className="h-4 sm:h-5 w-12 sm:w-16 rounded bg-zinc-200 dark:bg-zinc-800" />
+                  <div className="h-7 sm:h-8 w-14 sm:w-24 rounded-lg bg-zinc-200 dark:bg-zinc-800" />
                 </div>
               </div>
             ))}
           </div>
         ) : products.length === 0 ? (
           // Zero-Data Ghost Wireframe Empty Catalog Search State
-          <div className="min-h-[380px] rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 p-12 flex flex-col items-center justify-center text-center">
-            <div className="relative w-24 h-24 mb-4 flex items-center justify-center">
+          <div className="min-h-[340px] sm:min-h-[380px] rounded-3xl border border-dashed border-zinc-200 dark:border-zinc-800 p-8 sm:p-12 flex flex-col items-center justify-center text-center">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 mb-4 flex items-center justify-center">
               <div className="absolute inset-0 rounded-full border border-zinc-900/10 dark:border-zinc-100/10 animate-ping" />
-              <PackageSearch className="w-10 h-10 text-zinc-300 dark:text-zinc-700 stroke-1" />
+              <PackageSearch className="w-8 h-8 sm:w-10 sm:h-10 text-zinc-300 dark:text-zinc-700 stroke-1" />
             </div>
-            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
+            <h3 className="text-sm sm:text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">
               No Matching Products Found
             </h3>
             <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mb-5">
@@ -192,7 +192,7 @@ export default function StorefrontPage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

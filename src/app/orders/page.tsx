@@ -149,7 +149,7 @@ export default function OrderHistoryPage() {
     <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
       <Header />
 
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12 pb-24 md:pb-12">
         {/* Page Title & Breadcrumbs */}
         <div className="mb-6">
           <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 mb-2">
@@ -190,7 +190,7 @@ export default function OrderHistoryPage() {
           <div className="mb-6 space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-2 sm:p-2.5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 shadow-xs">
               {/* Segmented Filter Control */}
-              <div className="flex items-center gap-1 overflow-x-auto p-1 scrollbar-none">
+              <div className="flex items-center gap-1 overflow-x-auto p-1 no-scrollbar w-full sm:w-auto -mx-1 px-1">
                 {FILTER_TABS.map((tab) => {
                   const isActive = statusFilter === tab.id;
                   const Icon = tab.icon;
@@ -384,8 +384,8 @@ export default function OrderHistoryPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <div className="text-right">
+                    <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-100 dark:border-zinc-800/60">
+                      <div className="text-left sm:text-right">
                         <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-400 block">
                           Total Paid
                         </span>
