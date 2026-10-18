@@ -70,12 +70,25 @@ body {
 }
 
 /* Separation Tier Architecture for Blur & Glassmorphism */
+/* Default Glass Base */
+.glass-panel {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: rgba(255, 255, 255, 0.82);
+}
+.dark .glass-panel,
+html.dark .glass-panel {
+  background-color: rgba(9, 9, 11, 0.82);
+}
+
 /* High-Tier: Luxury GPU Backdrop Blur */
 [data-blur-tier="high"] .glass-panel {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   background-color: rgba(255, 255, 255, 0.82);
 }
+.dark[data-blur-tier="high"] .glass-panel,
+html.dark[data-blur-tier="high"] .glass-panel,
 .dark [data-blur-tier="high"] .glass-panel,
 [data-blur-tier="high"] .dark .glass-panel {
   background-color: rgba(9, 9, 11, 0.82);
@@ -88,6 +101,8 @@ body {
   background-color: #ffffff !important;
   border-color: rgba(0, 0, 0, 0.12) !important;
 }
+.dark[data-blur-tier="low"] .glass-panel,
+html.dark[data-blur-tier="low"] .glass-panel,
 .dark [data-blur-tier="low"] .glass-panel,
 [data-blur-tier="low"] .dark .glass-panel {
   background-color: #09090b !important;
