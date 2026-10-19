@@ -25,7 +25,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Arcfield — Premium Workspace Gear & Studio Equipment",
+  title: "Ecommerce — Premium Workspace Gear & Studio Equipment",
   description:
     "Engineered mechanical interfaces, ergonomics, studio audio equipment, and workspace accessories crafted with uncompromising quality.",
   icons: {

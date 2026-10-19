@@ -190,7 +190,7 @@ export function AuthCard({ initialMode = "login", redirectNext = "/", onSuccess 
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="customer@arcfield.com"
+                placeholder="customer@ecommerce.com"
                 className="w-full pl-9 pr-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:border-zinc-900 dark:focus:border-zinc-100"
               />
             </div>
@@ -237,11 +237,11 @@ export function AuthCard({ initialMode = "login", redirectNext = "/", onSuccess 
             <span>Pre-seeded Demo Accounts:</span>
           </div>
           <div className="flex justify-between font-mono">
-            <span>Customer: customer@arcfield.com</span>
+            <span>Customer: customer@ecommerce.com</span>
             <span>CustomerPass123!</span>
           </div>
           <div className="flex justify-between font-mono">
-            <span>Admin: admin@arcfield.com</span>
+            <span>Admin: admin@ecommerce.com</span>
             <span>AdminPass123!</span>
           </div>
         </div>

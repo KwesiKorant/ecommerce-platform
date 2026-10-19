@@ -66,7 +66,7 @@ export async function getAuthSession(req: Request): Promise<AuthUser | null> {
   if (process.env.NODE_ENV !== "production" && req.headers.get("x-test-bypass") === "true") {
     const testRole = (req.headers.get("x-test-role")?.toUpperCase() as Role) || Role.CUSTOMER;
     const testUserId = req.headers.get("x-test-user-id") || "usr_test_evaluator";
-    const testEmail = req.headers.get("x-test-email") || "evaluator@arcfield.com";
+    const testEmail = req.headers.get("x-test-email") || "evaluator@ecommerce.com";
     const testName = req.headers.get("x-test-name") || "Evaluator Test User";
 
     return {

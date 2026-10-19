@@ -112,7 +112,7 @@ export const useCartStore = create<CartState>()(
       },
     }),
     {
-      name: "arcfield_cart_storage",
+      name: "ecommerce_cart_storage",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ items: state.items }),
     }

@@ -32,7 +32,7 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
             <Link
               href="/"
               className="flex items-center group btn-tactile shrink-0"
-              aria-label="Arcfield Systems Home"
+              aria-label="Ecommerce Home"
             >
               <BrandLogo className="h-7 sm:h-8 w-auto text-zinc-900 dark:text-zinc-100 group-hover:opacity-80 transition-opacity" />
             </Link>
@@ -110,23 +110,23 @@ export function Header({ searchQuery = "", onSearchChange }: HeaderProps) {
               <Link
                 href="/login"
                 title="Sign In"
-                aria-label="Sign In to Arcfield Systems"
+                aria-label="Sign In to Ecommerce"
                 className="hidden md:flex items-center justify-center w-9 h-9 rounded-full border border-zinc-200 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-900/80 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:border-zinc-300 dark:hover:border-zinc-700 btn-tactile transition-colors shadow-xs"
               >
                 <UserIcon className="w-4 h-4" />
               </Link>
             )}
 
-            {/* Cart Trigger (Desktop/Tablet: md:flex, Mobile: hidden as bottom nav handles Cart) */}
+            {/* Cart Trigger (Universal navbar position across all viewports) */}
             <button
               type="button"
               onClick={toggleCart}
               aria-label={`Shopping Cart with ${totalItemCount} items`}
-              className="hidden md:flex relative items-center justify-center p-2.5 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-sm btn-tactile cursor-pointer shrink-0"
+              className="flex relative items-center justify-center w-9 h-9 rounded-full bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs btn-tactile cursor-pointer shrink-0"
             >
               <ShoppingBag className="w-4 h-4" />
               {totalItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-emerald-600 text-white text-[11px] font-bold shadow-sm">
+                <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-4.5 px-1 rounded-full bg-emerald-600 text-white text-[10px] font-bold shadow-sm">
                   <AnimatedCounter value={totalItemCount} decimals={0} />
                 </span>
               )}

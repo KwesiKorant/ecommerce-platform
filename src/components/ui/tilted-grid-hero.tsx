@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-/* ── Arcfield 3D Cylindrical Equipment Showcase Ribbon ─────────────
+/* ── 3D Cylindrical Equipment Showcase Ribbon ──────────────────────
  * High-performance 3D cylinder rotating continuous studio equipment tiles.
  *
  * Stabilization Enhancements (Option 2):

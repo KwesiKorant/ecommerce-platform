@@ -11,10 +11,8 @@ import {
   useReducedMotion,
   AnimatePresence,
 } from "motion/react";
-import { LayoutGrid, Package, ShoppingBag, User as UserIcon, Shield } from "lucide-react";
-import { useCartStore } from "@/store/use-cart-store";
+import { LayoutGrid, Package, User as UserIcon, Shield } from "lucide-react";
 import { useAuthSession } from "@/hooks/use-auth-session";
-import { AnimatedCounter } from "@/components/ui/animated-counter";
 
 interface DockItemProps {
   mouseX: ReturnType<typeof useMotionValue<number>>;
@@ -135,9 +133,6 @@ function DockItem({
 export function MobileBottomNav() {
   const pathname = usePathname();
   const { user, isAdmin } = useAuthSession();
-  const toggleCart = useCartStore((state) => state.toggleCart);
-  const items = useCartStore((state) => state.items);
-  const totalItemCount = items.reduce((acc, i) => acc + i.quantity, 0);
 
   // Proximity mouse/touch tracking coordinate
   const mouseX = useMotionValue(Infinity);
@@ -185,25 +180,7 @@ export function MobileBottomNav() {
           <Package className="w-5 h-5" />
         </DockItem>
 
-        {/* 3. Shopping Cart */}
-        <DockItem
-          mouseX={mouseX}
-          onClick={toggleCart}
-          title="Shopping Cart"
-          ariaLabel={`Shopping Cart with ${totalItemCount} items`}
-          isActive={false}
-          badge={
-            totalItemCount > 0 ? (
-              <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-emerald-600 text-white text-[9px] font-bold shadow-xs">
-                <AnimatedCounter value={totalItemCount} decimals={0} />
-              </span>
-            ) : null
-          }
-        >
-          <ShoppingBag className="w-5 h-5" />
-        </DockItem>
-
-        {/* 4. Profile / Account */}
+        {/* 3. Profile / Account */}
         <DockItem
           mouseX={mouseX}
           href={user ? "/account" : "/login"}

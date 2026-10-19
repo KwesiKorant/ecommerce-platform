@@ -1,4 +1,4 @@
-# Arcfield Systems — Precision Retail & Workspace Gear
+# Ecommerce — Precision Retail & Workspace Gear
 
 [![Live Demo](https://img.shields.io/badge/Demo-ecom--nk.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://ecom-nk.vercel.app)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16.4.2-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -65,9 +65,9 @@ The platform includes pre-seeded demo accounts for evaluation:
 
 | Role | Email | Password | Permissions |
 | :--- | :--- | :--- | :--- |
-| **Admin** | `admin@arcfield.com` | `AdminPass123!` | Full backoffice, audit log inspection, product creation, order status manipulation |
-| **Customer** | `customer@arcfield.com` | `CustomerPass123!` | Saved addresses, order history, personal profile settings, cart checkout |
-| **Evaluator** | `evaluator@arcfield.com` | `EvaluatorPass123!` | Sandbox customer account for testing checkout and fulfillment flows |
+| **Admin** | `admin@ecommerce.com` | `AdminPass123!` | Full backoffice, audit log inspection, product creation, order status manipulation |
+| **Customer** | `customer@ecommerce.com` | `CustomerPass123!` | Saved addresses, order history, personal profile settings, cart checkout |
+| **Evaluator** | `evaluator@ecommerce.com` | `EvaluatorPass123!` | Sandbox customer account for testing checkout and fulfillment flows |
 
 ---
 
@@ -169,4 +169,4 @@ npm run build
 
 ## License
 
-Crafted by **Arcfield Systems**. All rights reserved. Distributed under the MIT License.
+Crafted for **Ecommerce Platform**. All rights reserved. Distributed under the MIT License.

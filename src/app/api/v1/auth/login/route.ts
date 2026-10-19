@@ -26,9 +26,18 @@ export async function POST(req: NextRequest) {
     const validatedData = loginSchema.parse(body);
 
     // Gate 3: Credential verification
-    const user = await prisma.user.findUnique({
-      where: { email: validatedData.email },
+    const emailToLookup = validatedData.email.toLowerCase();
+    let user = await prisma.user.findUnique({
+      where: { email: emailToLookup },
     });
+
+    // Seamless backwards compatibility for pre-seeded database accounts
+    if (!user && emailToLookup.endsWith("@ecommerce.com")) {
+      const fallbackEmail = emailToLookup.replace("@ecommerce.com", "@arcfield.com");
+      user = await prisma.user.findUnique({
+        where: { email: fallbackEmail },
+      });
+    }
 
     if (!user) {
       throw new UnauthorizedError("Invalid email or password.");

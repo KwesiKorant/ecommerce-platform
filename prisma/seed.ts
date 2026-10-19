@@ -24,16 +24,16 @@ async function main() {
 
   const admin = await prisma.user.create({
     data: {
-      email: "admin@arcfield.com",
+      email: "admin@ecommerce.com",
       passwordHash: adminPasswordHash,
-      fullName: "Arcfield Admin",
+      fullName: "Ecommerce Admin",
       role: Role.ADMIN,
     },
   });
 
   const customer = await prisma.user.create({
     data: {
-      email: "customer@arcfield.com",
+      email: "customer@ecommerce.com",
       passwordHash: customerPasswordHash,
       fullName: "Ama Serwaa",
       role: Role.CUSTOMER,
@@ -42,7 +42,7 @@ async function main() {
 
   const evaluator = await prisma.user.create({
     data: {
-      email: "evaluator@arcfield.com",
+      email: "evaluator@ecommerce.com",
       passwordHash: evaluatorPasswordHash,
       fullName: "Auspify Evaluator",
       role: Role.CUSTOMER,
@@ -181,8 +181,8 @@ async function main() {
       categorySlug: "lifestyle",
     },
     {
-      title: "Arcfield Studio Desk Setup",
-      slug: "arcfield-studio-desk-setup",
+      title: "Studio Desk Setup",
+      slug: "studio-desk-setup",
       description: "Complete studio workspace system integrating solid American walnut surface, motorized dual-motor sit-stand chassis, CNC aluminum cable management rail, and built-in Qi2 fast wireless charging.",
       price: 899.99,
       stock: 5,
@@ -329,9 +329,9 @@ async function main() {
   console.log("\n✅ Database seeding successfully completed!");
   console.log("--------------------------------------------------");
   console.log("Demo Credentials:");
-  console.log("  Admin:    admin@arcfield.com    / AdminPass123!");
-  console.log("  Customer: customer@arcfield.com / CustomerPass123!");
-  console.log("  Evaluator: evaluator@arcfield.com / EvaluatorPass123!");
+  console.log("  Admin:    admin@ecommerce.com    / AdminPass123!");
+  console.log("  Customer: customer@ecommerce.com / CustomerPass123!");
+  console.log("  Evaluator: evaluator@ecommerce.com / EvaluatorPass123!");
   console.log("--------------------------------------------------");
 }
 

@@ -140,7 +140,7 @@ export function ExpandingSearchDock({
         transition={{ type: "spring", stiffness: 420, damping: 32 }}
         className={`flex items-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md overflow-hidden transition-colors ${
           isExpanded
-            ? "w-36 sm:w-48 md:w-56 lg:w-64 max-w-[calc(100vw-110px)] px-2.5 sm:px-3 py-1.5 shadow-xs"
+            ? "w-36 sm:w-48 md:w-56 lg:w-64 max-w-[calc(100vw-145px)] px-2.5 sm:px-3 py-1.5 shadow-xs"
             : "w-9 h-9 sm:w-10 sm:h-10 p-2 justify-center cursor-pointer btn-tactile hover:bg-zinc-100 dark:hover:bg-zinc-800"
         }`}
         onClick={() => {

@@ -1,6 +1,6 @@
 /**
  * Automated Evaluator Verification Suite (AC-1 through AC-8)
- * Arcfield Application Architecture Standard (Arc-AA)
+ * Ecommerce Application Architecture Standard (Ecom-AA)
  * Zero-dependency native Node.js test runner
  */
 
@@ -97,7 +97,7 @@ async function runTestSuite() {
         "X-Forwarded-For": randomIp(),
       },
       body: JSON.stringify({
-        email: "customer@arcfield.com",
+        email: "customer@ecommerce.com",
         password: "CustomerPass123!",
       }),
     });
@@ -117,7 +117,7 @@ async function runTestSuite() {
         "X-Forwarded-For": randomIp(),
       },
       body: JSON.stringify({
-        email: "admin@arcfield.com",
+        email: "admin@ecommerce.com",
         password: "AdminPass123!",
       }),
     });

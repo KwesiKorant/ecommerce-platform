@@ -1,4 +1,4 @@
-# Arcfield E-Commerce Platform — State Save Document
+# Ecommerce Platform — State Save Document
 
 > **Saved State:** Completed Base Model (Phases 0–4 Verified)  
 > **Date:** October 17, 2026  
@@ -58,9 +58,9 @@
 
 | Role | Email | Password |
 | :--- | :--- | :--- |
-| **Admin** | `admin@arcfield.com` | `AdminPass123!` |
-| **Customer** | `customer@arcfield.com` | `CustomerPass123!` |
-| **Evaluator** | `evaluator@arcfield.com` | `EvaluatorPass123!` |
+| **Admin** | `admin@ecommerce.com` | `AdminPass123!` |
+| **Customer** | `customer@ecommerce.com` | `CustomerPass123!` |
+| **Evaluator** | `evaluator@ecommerce.com` | `EvaluatorPass123!` |
 
 ---
 

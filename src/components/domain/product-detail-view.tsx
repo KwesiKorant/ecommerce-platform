@@ -144,7 +144,7 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
         { label: "Fastening Hardware", value: "Marine-Grade 316 Stainless Steel Machine Screws" },
         { label: "Thermal Dissipation", value: "Passive Convection Heat Exhaust Airflow Channels" },
         { label: "Environmental Standard", value: "100% Recyclable Packaging & Zero VOC Finishes" },
-        { label: "Compatibility", value: "Universal Arcfield Workspace Rail System" },
+        { label: "Compatibility", value: "Universal Workspace Rail System" },
       ];
     }
     // Default Electronics / Peripherals
@@ -532,7 +532,7 @@ export function ProductDetailView({ product, relatedProducts }: ProductDetailVie
             {activeTab === "warranty" && (
               <div className="space-y-4 text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-2xl">
                 <p>
-                  Every Arcfield hardware instrument is protected by our comprehensive 2-Year Limited Manufacturer Warranty,
+                  Every hardware instrument is protected by our comprehensive 2-Year Limited Manufacturer Warranty,
                   covering any defects in materials, switches, internal acoustics, or structural integrity.
                 </p>
                 <p>

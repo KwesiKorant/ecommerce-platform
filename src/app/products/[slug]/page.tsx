@@ -36,16 +36,16 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   if (!product) {
     return {
-      title: "Product Not Found | Arcfield",
+      title: "Product Not Found | Ecommerce",
       description: "The requested equipment item could not be located in our catalog.",
     };
   }
 
   return {
-    title: `${product.title} | Arcfield Precision Retail`,
+    title: `${product.title} | Ecommerce`,
     description: product.description,
     openGraph: {
-      title: `${product.title} | Arcfield`,
+      title: `${product.title} | Ecommerce`,
       description: product.description,
       images: [
         {

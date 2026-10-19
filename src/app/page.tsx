@@ -41,7 +41,7 @@ const SHOWCASE_HERO_FALLBACK_IMAGES = [
   },
   {
     src: "https://images.unsplash.com/photo-1593062096033-9a26b09da705?auto=format&fit=crop&w=800&q=80",
-    alt: "Arcfield Studio Desk Setup",
+    alt: "Studio Desk Setup",
   },
   {
     src: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
@@ -155,13 +155,13 @@ export default function StorefrontPage() {
           <div className="relative z-10 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900/5 dark:bg-white/10 text-zinc-700 dark:text-zinc-300 text-[10px] sm:text-xs font-mono font-medium mb-3 sm:mb-4 border border-zinc-200/60 dark:border-zinc-800/60">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>ARCFIELD STUDIO SETUP &bull; IN STOCK</span>
+              <span>STUDIO SETUP &bull; IN STOCK</span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.15]">
               The Desk Setup.
             </h1>
             <p className="mt-2 sm:mt-2.5 text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-mono">
-              Arcfield Systems // Curated Workspace Gear & Acoustic Tools
+              Ecommerce // Curated Workspace Gear & Acoustic Tools
             </p>
 
             {/* Direct Shopper Action & Live Inventory Guarantee */}
@@ -316,7 +316,7 @@ export default function StorefrontPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <div className="flex items-center gap-2">
             <BrandLogo className="h-4.5 w-auto text-zinc-900 dark:text-zinc-100 shrink-0" />
-            <span className="font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">ARCFIELD SYSTEMS</span>
+            <span className="font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">ECOMMERCE</span>
             <span>&bull;</span>
             <span>Precision Workspace Gear & Craft</span>
           </div>
@@ -325,7 +325,7 @@ export default function StorefrontPage() {
             <span>&bull;</span>
             <span>2-Year Warranty</span>
             <span>&bull;</span>
-            <span>&copy; 2026 Arcfield Systems.</span>
+            <span>&copy; 2026 Ecommerce.</span>
           </div>
         </div>
       </footer>
